@@ -11,7 +11,7 @@
                 <div class ="header-left">
                     <div class ="menu">
                         <span class ="bars-icon">
-                            <img class ="bars-icon" src="../assets/svg/search/3barsv2.svg" width="50"/>
+                            <img class ="bars-icon" src="../assets/svg/search/3bars.svg" width="50"/>
                         </span>
                     </div>
                     <div class='logo-site'>
@@ -43,7 +43,7 @@
                     </div>
                     <div class='history'>
                         <span>
-                            <img class ="history-logo" src="../assets/svg/search/clock-illuv2.svg" width="70"/>
+                            <img class ="history-logo" src="../assets/svg/search/clock-illu.svg" width="70"/>
                         </span>
                     </div>
                 </div>
