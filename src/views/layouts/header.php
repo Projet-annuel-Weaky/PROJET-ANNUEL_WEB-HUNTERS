@@ -11,7 +11,7 @@
                 <div class ="header-left">
                     <div class ="menu">
                         <span class ="bars-icon">
-                            <img class ="bars-icon" src="../assets/svg/search/3bars.svg"/>
+                            <img class ="bars-icon" src="../assets/svg/search/3barsv2.svg" width="50"/>
                         </span>
                     </div>
                     <div class='logo-site'>
@@ -20,13 +20,14 @@
                                 <span class='logo-icon'>
                                     <img class='logo-icon' src="../assets/logo/logo_Web-Hunters_WEAKY.png" alt="Logo de WEAKY" />
                                 </span>
-                                WEAKY
+                              weaky  
                             </div>
+                            
                         </a>
                 </div>
                 <div class='search-bar'>
-                    <span class='search-icon'>
-                        <?php include ROOT . "../assets/svg/search/search.svg"; ?>
+                    <span class='search-icon' >
+                        <?php include ROOT . "../assets/svg/search/search.svg";  ?>
                     </span>
                     <input type='text' class='search-input' placeholder='Rechercher un article, un thème...' id='searchInput'>
                 </div>
@@ -42,7 +43,7 @@
                     </div>
                     <div class='history'>
                         <span>
-                            <img class ="history-logo" src="../assets/svg/search/clock-illu.svg"/>
+                            <img class ="history-logo" src="../assets/svg/search/clock-illuv2.svg" width="70"/>
                         </span>
                     </div>
                 </div>
