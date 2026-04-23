@@ -74,6 +74,13 @@ header {
   background: #2d3e52;
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
 }
+
+.menu-toggle {
+  background-color: var(--bg-secondary);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
 .search-icon {
   display: flex;
   align-items: center;

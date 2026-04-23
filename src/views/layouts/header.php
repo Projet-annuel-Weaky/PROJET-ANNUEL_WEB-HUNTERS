@@ -12,7 +12,9 @@
                 <div class ="header-left">
                     <div class ="menu">
                         <span class ="bars-icon">
-                            <img class ="bars-icon" src="../assets/svg/search/3bars.svg" width="70"/>
+                            <button class="menu-toggle"> 
+                                <img class ="bars-icon" src="../assets/svg/search/3bars.svg" width="70"/> 
+                            </button>
                         </span>
                     </div>
                     <div class='logo-site'>
@@ -50,3 +52,34 @@
                     </div>
                 </div>
             </header>
+            <div class='profile-dropdown-connected'>
+                <aside>
+                    <ul>
+                        <li><a href="#">Mon Profil</a></li>
+                        <li><a href="#">Paramètres</a></li>
+                        <li><a href="#">Adminstration</a></li>
+                        <li><a href="#">Déconnexion</a></li>
+                    </ul>
+                </aside>
+            </div>
+            <div class='profile-dropdown-connected'>
+                <aside>
+                    <ul>
+                        <li><a href="#">Insription</a></li>
+                        <li><a href="#">Se Connecter</a></li>
+                    </ul>
+                </aside>
+            </div>
+            <div class='menu-dropdown'>
+                <aside>
+                    <ul>
+                        <li><a href="#">NAVIGATION</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#">CATEGORIES</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#">UTILSATEURS</a></li>
+                    </ul>
+                </aside>
+            </div>
