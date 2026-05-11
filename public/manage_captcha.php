@@ -34,6 +34,16 @@ require_once SRC . "/views/layouts/header.php";
         <div class="admin-layout">
             <div class="admin-panel">
                 <h2>Captcha</h2>
+                <?php
+                    $totalsStmt = $pdo->query('SELECT COALESCE(SUM(completed),0) AS total_completed, COALESCE(SUM(failed),0) AS total_failed, COALESCE(SUM(reseted),0) AS total_reseted FROM captcha_images');
+                    $totals = $totalsStmt->fetch(PDO::FETCH_ASSOC);
+                ?>
+                <div class='stats-summary'>
+                    <h3>Captcha Statistiques</h3>
+                    <p><strong>Total Completed:</strong> <?= htmlspecialchars($totals['total_completed'] ?? 0, ENT_QUOTES, 'UTF-8') ?></p>
+                    <p><strong>Total Failed:</strong> <?= htmlspecialchars($totals['total_failed'] ?? 0, ENT_QUOTES, 'UTF-8') ?></p>
+                    <p><strong>Total Reseted:</strong> <?= htmlspecialchars($totals['total_reseted'] ?? 0, ENT_QUOTES, 'UTF-8') ?></p>
+                </div>
                 <form action="captcha/add_image.php" method="POST" enctype="multipart/form-data">
                     <input type="file" name="image" accept="image/png,image/jpeg,image/gif" required>
                     <button type="submit">Ajouter une image</button>
