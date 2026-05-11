@@ -16,7 +16,7 @@ function setCaptchaSolvedState(isSolved) {
         });
     }
 }
-
+//test pour git
 async function sendCaptchaStat(action) {
     if (!currentImageId) return;
 
