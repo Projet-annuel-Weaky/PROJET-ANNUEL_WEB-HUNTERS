@@ -1,10 +1,18 @@
 <?php
-require_once __DIR__ . '/config.php';
 
-header('Content-Type: application/json');
+ini_set("display_errors", "1");
+error_reporting(E_ALL);
 
-$_SESSION['captcha_valid'] = false;
-unset($_SESSION['captcha_validated_at'], $_SESSION['captcha_expected_order'], $_SESSION['captcha_image_id']);
+require_once __DIR__ . "/../../configs/config.php";
+
+header("Content-Type: application/json");
+
+$_SESSION["captcha_valid"] = false;
+unset(
+    $_SESSION["captcha_validated_at"],
+    $_SESSION["captcha_expected_order"],
+    $_SESSION["captcha_image_id"],
+);
 
 try {
     $stmt = $pdo->prepare('
@@ -18,24 +26,26 @@ try {
     $selected = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$selected) {
-        logAction('fetch_image: No active captcha images found.');
+        logAction("fetch_image: No active captcha images found.");
         http_response_code(404);
-        echo json_encode(['error' => 'No active captcha images found']);
-        exit;
+        echo json_encode(["error" => "No active captcha images found"]);
+        exit();
     }
 
-    $_SESSION['captcha_image_id'] = (int)$selected['id'];
-    $_SESSION['captcha_expected_order'] = [1, 2, 3, 4];
-    logAction("fetch_image: Served image id={$selected['id']} filename={$selected['filename']}.");
+    $_SESSION["captcha_image_id"] = (int) $selected["id"];
+    $_SESSION["captcha_expected_order"] = [1, 2, 3, 4];
+    logAction(
+        "fetch_image: Served image id={$selected["id"]} filename={$selected["filename"]}.",
+    );
 
     echo json_encode([
-        'id' => $selected['id'],
-        'filename' => $selected['filename'],
-        'imageData' => base64_encode($selected['image_data']),
-        'mimeType' => $selected['mime_type']
+        "id" => $selected["id"],
+        "filename" => $selected["filename"],
+        "imageData" => base64_encode($selected["image_data"]),
+        "mimeType" => $selected["mime_type"],
     ]);
 } catch (Exception $ex) {
-    logAction('fetch_image: Exception: ' . $ex->getMessage());
-    http_response_code(500);
-    echo json_encode(['error' => $ex->getMessage()]);
+    //logAction("fetch_image: Exception: " . $ex->getMessage());
+    echo json_encode(["error" => $ex->getMessage()]);
+    http_response_code(501);
 }
