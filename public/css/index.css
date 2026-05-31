@@ -1,0 +1,24 @@
+#WELCOME,
+.home-container {
+  display: grid;
+  gap: var(--spacing-md);
+  max-width: 1180px;
+  margin: 0 auto var(--spacing-xl);
+  padding: var(--spacing-xl) 0;
+}
+
+.home-container h1 {
+  font-size: 38px;
+}
+
+.home-container p {
+  max-width: 720px;
+}
+
+.quick-links .card {
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

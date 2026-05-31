@@ -1,0 +1,10 @@
+footer {
+  border-top: 1px solid var(--border-light);
+  background: rgba(8, 17, 31, 0.96);
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  color: var(--text-tertiary);
+}
+
+footer p {
+  margin: 0;
+}

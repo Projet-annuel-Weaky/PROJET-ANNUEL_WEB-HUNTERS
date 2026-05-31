@@ -1,0 +1,78 @@
+.captcha-login-block {
+    display: grid;
+    gap: 10px;
+    margin-top: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: rgba(8, 17, 31, 0.35);
+    padding: var(--spacing-lg);
+}
+
+#game {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+#parts {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    max-width: 340px;
+}
+
+#parts canvas {
+    width: 150px;
+    height: auto;
+    cursor: grab;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    display: block;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.captcha-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#resetBtn,
+#validateBtn {
+    margin-top: 0;
+}
+
+#resetBtn {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.45);
+}
+
+#validateBtn {
+    background: linear-gradient(
+        135deg,
+        var(--accent-indigo),
+        var(--accent-purple)
+    );
+}
+
+.status-message {
+    min-height: 20px;
+}
+
+.status-message.success-message {
+    color: #86efac;
+}
+
+.status-message.fail-message {
+    color: #fca5a5;
+}
