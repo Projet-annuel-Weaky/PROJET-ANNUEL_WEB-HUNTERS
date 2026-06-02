@@ -35,6 +35,11 @@ require_once SRC . "/views/layouts/header.php";
             <div class="admin-panel">
                 <h2>Captcha</h2>
                 <?php
+                    if (session_status() === PHP_SESSION_NONE) session_start();
+                    if (!empty($_SESSION['captcha_warn'])) {
+                        echo '<div class="warning">' . htmlspecialchars($_SESSION['captcha_warn'], ENT_QUOTES, 'UTF-8') . '</div>';
+                        unset($_SESSION['captcha_warn']);
+                    }
                     $totalsStmt = $pdo->query('SELECT COALESCE(SUM(completed),0) AS total_completed, COALESCE(SUM(failed),0) AS total_failed, COALESCE(SUM(reseted),0) AS total_reseted FROM captcha_images');
                     $totals = $totalsStmt->fetch(PDO::FETCH_ASSOC);
                 ?>

@@ -17,9 +17,9 @@ unset(
 
 try {
     $stmt = $pdo->prepare('
-        SELECT id, filename, image_data, mime_type
+        SELECT id, filename, mime_type
         FROM captcha_images
-        WHERE active = TRUE AND image_data IS NOT NULL
+        WHERE active = TRUE
         ORDER BY RAND()
         LIMIT 1
     ');
@@ -33,6 +33,16 @@ try {
         exit();
     }
 
+    $imagePath = __DIR__ . '/images/' . $selected['filename'];
+    if (!file_exists($imagePath)) {
+        logAction("fetch_image: File missing for id={$selected['id']} filename={$selected['filename']}");
+        http_response_code(500);
+        echo json_encode(["error" => "Captcha image file missing on server"]);
+        exit();
+    }
+
+    $imageData = file_get_contents($imagePath);
+
     $_SESSION["captcha_image_id"] = (int) $selected["id"];
     $_SESSION["captcha_expected_order"] = [1, 2, 3, 4];
     logAction(
@@ -42,11 +52,10 @@ try {
     echo json_encode([
         "id" => $selected["id"],
         "filename" => $selected["filename"],
-        "imageData" => base64_encode($selected["image_data"]),
+        "imageData" => base64_encode($imageData),
         "mimeType" => $selected["mime_type"],
     ]);
 } catch (Exception $ex) {
-    //logAction("fetch_image: Exception: " . $ex->getMessage());
     echo json_encode(["error" => $ex->getMessage()]);
     http_response_code(501);
 }

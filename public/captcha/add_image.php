@@ -25,18 +25,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["image"])) {
         die("Invalid file type. Only JPG, PNG, GIF allowed.");
     }
 
-    $imageData = file_get_contents($file["tmp_name"]);
-    if ($imageData === false) {
-        logAction("add_image: Failed to read uploaded file {$file["name"]}.");
-        die("Failed to read uploaded file.");
+    $imageDir = __DIR__ . '/images';
+    if (!is_dir($imageDir)) {
+        mkdir($imageDir, 0755, true);
     }
 
-    $filename = basename($file["name"]);
+    $filename = preg_replace('/[^A-Za-z0-9._-]/', '_', basename($file["name"]));
+    $targetPath = $imageDir . '/' . $filename;
+
+    if (file_exists($targetPath)) {
+        logAction("add_image: File exists, overwriting $targetPath");
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        $_SESSION['captcha_warn'] = "Le fichier {$filename} existe déjà, il sera écrasé.";
+    }
+
+    if (!move_uploaded_file($file["tmp_name"], $targetPath)) {
+        logAction("add_image: Failed to move uploaded file to $targetPath");
+        die("Failed to save uploaded file.");
+    }
 
     $stmt = $pdo->prepare(
-        "INSERT INTO captcha_images (filename, image_data, mime_type, active, created_at) VALUES (?, ?, ?, 1, NOW())",
+        "INSERT INTO captcha_images (filename, mime_type, active, created_at) VALUES (?, ?, 1, NOW())"
     );
-    $stmt->execute([$filename, $imageData, $mimeType]);
+    $stmt->execute([$filename, $mimeType]);
 
     logAction("add_image: Inserted image filename=$filename mime=$mimeType.");
     header("Location: ../manage_captcha.php");
