@@ -35,6 +35,7 @@ try {
 
     $_SESSION["captcha_image_id"] = (int) $selected["id"];
     $_SESSION["captcha_expected_order"] = [1, 2, 3, 4];
+    $_SESSION["captcha_fetched_at"] = time();
     logAction(
         "fetch_image: Served image id={$selected["id"]} filename={$selected["filename"]}.",
     );

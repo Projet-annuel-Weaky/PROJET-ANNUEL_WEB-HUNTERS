@@ -115,6 +115,23 @@ async function validateCaptcha() {
       updateStatus("complete");
       setCaptchaSolvedState(true);
       sendCaptchaStat("completed");
+
+      if (data.token) {
+        // inject token into all forms so server can verify single-use token on submit
+        document.querySelectorAll('form').forEach((form) => {
+          let existing = form.querySelector('input[name="captcha_token"]');
+          if (!existing) {
+            const inp = document.createElement('input');
+            inp.type = 'hidden';
+            inp.name = 'captcha_token';
+            inp.value = data.token;
+            form.appendChild(inp);
+          } else {
+            existing.value = data.token;
+          }
+        });
+      }
+
       return;
     }
 
