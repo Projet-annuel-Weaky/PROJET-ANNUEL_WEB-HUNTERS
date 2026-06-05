@@ -1,30 +1,30 @@
 .logo {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    font-weight: 700;
-    font-size: 20px;
-    color: var(--accent-purple-light);
-    cursor: pointer;
-    transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-weight: 700;
+  font-size: 20px;
+  /*color: var(--accent-purple-light);*/
+  cursor: pointer;
+  /*transition: color var(--transition-fast);*/
 }
 
 .logo:hover {
-    color: var(--accent-purple-lighter);
+  color: var(--accent-purple-lighter);
 }
 
 .logo-icon {
-    width: 42px;
-    height: 42px;
-    background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 18px;
+  width: 60px;
+  height: 60px;
+  /*background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));*/
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
 }
 
 .titre-actif {
-    color: red;
+  color: red;
 }

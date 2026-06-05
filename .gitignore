@@ -1,15 +1,7 @@
-# Docker
 Dockerfile
 docker-compose.yml
-
-# Configuration Apache
 apache-config.conf
-
-# Docker Logs
+init.sh
 logs
-
-# My SQL
 mysql-data
-
-# Configuration
 configs/config.php

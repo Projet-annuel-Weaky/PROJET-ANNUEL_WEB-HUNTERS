@@ -1,13 +1,17 @@
-@import 'var.css';
+@import "var.css";
 
-@import 'global.css';
+@import "global.css";
 
-@import 'header.css';
+@import "header.css";
 
-@import 'image.css';
+@import "image.css";
 
-@import 'user.css';
+@import "user.css";
 
-@import 'navigation.css';
+@import "index.css";
 
-@import 'footer.css';
+@import "navigation.css";
+
+@import "footer.css";
+
+@import "darkmode.css";

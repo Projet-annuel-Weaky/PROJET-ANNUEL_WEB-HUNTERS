@@ -1,0 +1,77 @@
+body.lightMode {
+  --bg-primary: #eef2ff;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-soft: #f4f7fb;
+  --text-primary: #111827;
+  --text-secondary: #334155;
+  --text-tertiary: #64748b;
+  --border-color: #d7deee;
+  --border-light: #e5eaf5;
+  --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 14px 32px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 22px 46px rgba(15, 23, 42, 0.16);
+  background: radial-gradient(circle at top left, rgba(124, 58, 237, 0.12), transparent 28%), var(--bg-primary);
+  color: var(--text-primary);
+}
+
+body.lightMode header,
+body.lightMode footer {
+  background: rgba(255, 255, 255, 0.94);
+}
+
+body.lightMode .admin-bar,
+body.lightMode .captcha-login-block {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+body.lightMode .card,
+body.lightMode .profile-info,
+body.lightMode .admin-panel,
+body.lightMode .admin-list,
+body.lightMode .log-row {
+  background: linear-gradient(180deg, var(--bg-card), var(--bg-card-soft));
+}
+
+body.lightMode input,
+body.lightMode select,
+body.lightMode textarea,
+body.lightMode #parts {
+  background: #ffffff;
+}
+
+body.lightMode .error,
+body.lightMode .fail-message {
+  color: #b91c1c;
+}
+
+body.lightMode .success,
+body.lightMode .success-message {
+  color: #15803d;
+}
+
+body.lightMode button,
+body.lightMode .btn {
+  color: #ffffff;
+}
+
+body.lightMode .menu-toggle,
+body.lightMode .profile-button,
+body.lightMode .search-icon,
+body.lightMode .admin-bar button,
+body.lightMode .menu-dropdown button,
+body.lightMode .profile-dropdown-connected button,
+body.lightMode .profile-dropdown-disconnected button {
+  color: var(--text-primary);
+}
+
+body.lightMode .menu-dropdown,
+body.lightMode .profile-dropdown-connected,
+body.lightMode .profile-dropdown-disconnected {
+  background: var(--bg-secondary);
+}
+
+body.lightMode .bars-icon {
+  filter: none;
+}
