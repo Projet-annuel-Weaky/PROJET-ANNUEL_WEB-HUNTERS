@@ -7,6 +7,9 @@ require_once CONFIG . "/config.php";
 require_once SRC . "/services/LogService.php";
 
 $erreur = '';
+if (!empty($_GET['timeout'])) {
+    $erreur = 'Votre session a expiré pour inactivité. Veuillez vous reconnecter.';
+}
 $extraStyles = ['captcha/style.css'];
 
 LogService::visit('login.php');
@@ -16,9 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = trim($_POST['password'] ?? '');
     $captchaOk = !empty($_SESSION['captcha_valid'])
         && !empty($_SESSION['captcha_validated_at'])
-        && time() - $_SESSION['captcha_validated_at'] <= 300;
+        && time() - $_SESSION['captcha_validated_at'] <= 300
+        && !empty($_POST['captcha_token'])
+        && !empty($_SESSION['captcha_token'])
+        && hash_equals($_SESSION['captcha_token'], $_POST['captcha_token']);
 
-    unset($_SESSION['captcha_valid'], $_SESSION['captcha_validated_at'], $_SESSION['captcha_expected_order'], $_SESSION['captcha_image_id']);
+    unset($_SESSION['captcha_valid'], $_SESSION['captcha_validated_at'], $_SESSION['captcha_expected_order'], $_SESSION['captcha_image_id'], $_SESSION['captcha_token']);
 
     if (!$captchaOk) {
         $erreur = 'Veuillez compléter le captcha avant de vous connecter.';
@@ -40,6 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['role_id'] = $user['role_id'] ?? 1;
+                // track last activity for auto-logout
+                $_SESSION['last_activity'] = time();
+                // prevent session fixation
+                session_regenerate_id(true);
 
                 LogService::add('login_success', 'login.php', $user['id_user']);
 

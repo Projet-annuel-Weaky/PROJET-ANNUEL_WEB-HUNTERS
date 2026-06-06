@@ -26,6 +26,27 @@ $expectedImageId = $_SESSION["captcha_image_id"] ?? 0;
 $_SESSION["captcha_valid"] = false;
 unset($_SESSION["captcha_validated_at"]);
 
+$now = time();
+// basic rate limiting and minimum solve time
+$attempts = $_SESSION['captcha_attempts'] ?? 0;
+$firstAttemptAt = $_SESSION['captcha_first_attempt_at'] ?? $now;
+if ($now - $firstAttemptAt > 900) { // reset window after 15 minutes
+    $attempts = 0;
+    $_SESSION['captcha_first_attempt_at'] = $now;
+}
+if ($attempts >= 20) {
+    http_response_code(429);
+    echo json_encode(["success" => false, "error" => "Too many attempts"]);
+    exit();
+}
+
+$fetchedAt = $_SESSION['captcha_fetched_at'] ?? 0;
+if ($fetchedAt && ($now - $fetchedAt) < 2) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "error" => "Captcha solved too quickly"]);
+    exit();
+}
+
 if (
     $imageId <= 0 ||
     $imageId !== (int) $expectedImageId ||
@@ -44,8 +65,13 @@ $cleanExpectedOrder = array_map("intval", array_values($expectedOrder));
 if ($cleanOrder === $cleanExpectedOrder) {
     $_SESSION["captcha_valid"] = true;
     $_SESSION["captcha_validated_at"] = time();
-    echo json_encode(["success" => true]);
+    $_SESSION["captcha_token"] = bin2hex(random_bytes(20));
+    // reset attempt counters on success
+    unset($_SESSION['captcha_attempts'], $_SESSION['captcha_first_attempt_at']);
+    echo json_encode(["success" => true, "token" => $_SESSION["captcha_token"]]);
     exit();
 }
 
+// increment attempt counter
+$_SESSION['captcha_attempts'] = ($_SESSION['captcha_attempts'] ?? 0) + 1;
 echo json_encode(["success" => false]);

@@ -23,13 +23,64 @@ include_once SRC . "/views/layouts/header.php";
 <main>
     <section>
         <?php if ($article): ?>
-            <article>
+            <article id="article-content">
                 <h1><?= htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') ?></h1>
                 <?php if ($article['category_name']): ?>
                     <p>Catégorie : <a href="category.php?id_category=<?= $article['id_category'] ?>"><?= htmlspecialchars($article['category_name'], ENT_QUOTES, 'UTF-8') ?></a></p>
                 <?php endif; ?>
-                <p><?= nl2br(htmlspecialchars($article['content'], ENT_QUOTES, 'UTF-8')) ?></p>
+                <p class="article-meta">Publié le : <time datetime="<?= htmlspecialchars($article['created_at'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(date('d/m/Y', strtotime($article['created_at'])), ENT_QUOTES, 'UTF-8') ?></time></p>
+                <div class="article-body"><?= nl2br(htmlspecialchars($article['content'], ENT_QUOTES, 'UTF-8')) ?></div>
+                <div class="article-actions">
+                    <button id="exportPdf" type="button">Exporter en PDF</button>
+                    <a href="article.php">Retour aux articles</a>
+                </div>
             </article>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+            <script>
+                (function () {
+                    const btn = document.getElementById('exportPdf');
+                    if (!btn) return;
+                    btn.addEventListener('click', function () {
+                        const element = document.getElementById('article-content');
+                        if (!element) return;
+                        const title = (element.querySelector('h1') && element.querySelector('h1').innerText) || 'article';
+                        const timeEl = element.querySelector('.article-meta time');
+                        const date = timeEl ? timeEl.getAttribute('datetime').split(' ')[0] : '';
+                        const safeTitle = title.replace(/[^\w\- ]+/g, '').replace(/\s+/g, '_').substring(0, 80);
+                        const filename = (safeTitle || 'article') + (date ? '_' + date : '') + '.pdf';
+
+                        const opt = {
+                            margin: [10, 10, 10, 10],
+                            filename: filename,
+                            image: { type: 'jpeg', quality: 0.98 },
+                            html2canvas: { scale: 2, useCORS: true },
+                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                        };
+
+                        // clone element to apply PDF-specific styling without altering the page
+                        const clone = element.cloneNode(true);
+                        clone.style.background = '#fff';
+                        clone.style.color = '#000';
+
+                        // remove interactive elements so they are not included in the PDF
+                        const actions = clone.querySelector('.article-actions');
+                        if (actions) actions.remove();
+                        // extra safety: remove any remaining form or interactive controls
+                        clone.querySelectorAll('button, input, textarea, select').forEach(el => el.remove());
+
+                        clone.querySelectorAll('a').forEach(a => {
+                            a.style.color = '#000';
+                            a.removeAttribute('href');
+                        });
+
+                        const wrapper = document.createElement('div');
+                        wrapper.style.padding = '10mm';
+                        wrapper.appendChild(clone);
+
+                        html2pdf().set(opt).from(wrapper).save();
+                    });
+                })();
+            </script>
         <?php else: ?>
             <article>
                 <h1>Article introuvable</h1>

@@ -21,9 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $roleId = 1;
     $captchaOk = !empty($_SESSION['captcha_valid'])
         && !empty($_SESSION['captcha_validated_at'])
-        && time() - $_SESSION['captcha_validated_at'] <= 300;
+        && time() - $_SESSION['captcha_validated_at'] <= 300
+        && !empty($_POST['captcha_token'])
+        && !empty($_SESSION['captcha_token'])
+        && hash_equals($_SESSION['captcha_token'], $_POST['captcha_token']);
 
-    unset($_SESSION['captcha_valid'], $_SESSION['captcha_validated_at'], $_SESSION['captcha_expected_order'], $_SESSION['captcha_image_id']);
+    unset($_SESSION['captcha_valid'], $_SESSION['captcha_validated_at'], $_SESSION['captcha_expected_order'], $_SESSION['captcha_image_id'], $_SESSION['captcha_token']);
 
     if (!$captchaOk) {
         $erreur = 'Veuillez compléter le captcha avant de vous inscrire.';
