@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/MailService.php';
+
 class NewsletterService
 {
     public static function getRecipients()
