@@ -55,6 +55,7 @@ require_once SRC . "/views/layouts/header.php";
             <button><a href="manage_articles.php" class="admin-link">MANAGE_ARTICLE</a></button>
             <button><a href="manage_articles.php" class="admin-link">MANAGE_ARTICLE</a></button>
             <button><a href="manage_categories.php" class="admin-link">MANAGE_SECTOR</a></button>
+            <button><a href="manage_versions.php" class="admin-link">LOGS</a></button>
             <button><a href="logs.php" class="admin-link">LOGS</a></button>
             <button><a href="index.php" class="admin-link">RETURN -> HOME</a></button>
         </div>
