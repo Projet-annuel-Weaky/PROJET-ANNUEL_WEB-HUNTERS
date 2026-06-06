@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 global $pdo;
 $stmt = $pdo->query("
     SELECT v.*, u.username, a.title AS article_title
-    FROM article_versions v
+    FROM articles_versions v
     LEFT JOIN users u ON u.id_user = v.id_user
     LEFT JOIN articles a ON a.id_article = v.id_article
     WHERE v.status = 'pending'
@@ -48,7 +48,6 @@ require_once SRC . "/views/layouts/header.php";
 <main>
     <section>
         <h1>ADMINISTRATION</h1>
-        <!-- your admin-bar here -->
     </section>
     <section>
         <h2>Versions en attente de validation</h2>
