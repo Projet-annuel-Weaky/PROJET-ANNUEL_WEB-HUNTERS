@@ -1,7 +1,7 @@
 # PROJET-ANNUEL_WEB-HUNTERS
 ## C'est quoi ?
 
-**Wiki Tech** est un projet annuel de l'ESGI qui consiste à créer une **plateforme wiki moderne** pour partager et documenter des connaissances techniques. C'est comme Wikipedia mais spécialisé pour l'informatique et la pédagogie.
+**WEAKY** est un projet annuel de l'ESGI qui consiste à créer une **plateforme wiki moderne** pour partager et documenter des connaissances techniques. C'est comme Wikipedia mais spécialisé pour l'informatique et la pédagogie.
 
 ## L'objectif principal
 Permettre aux étudiants et utilisateurs de :
@@ -28,5 +28,10 @@ Le site doit avoir un **dark mode par defaut** être **minimaliste et lisible** 
 - **Apprentissage structuré** - Progression logique pour les étudiants
 - **Interaction communautaire** - Partage de connaissances
 
-## Techniquement
+## Technique
 Le projet est développé en **PHP/MySQL** côté backend avec **JavaScript et CSS** pour le frontend
+
+### Initialisation de la configuration
+le fichier [config-exemple.php](./configs/config-exemple.php) doit être copier et coller sous le nom de config.php.
+
+Entrer dans celui ci vos configurations local de votre environnement de développement.
