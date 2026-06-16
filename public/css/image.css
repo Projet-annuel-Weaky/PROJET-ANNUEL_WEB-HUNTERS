@@ -4,9 +4,7 @@
   gap: var(--spacing-md);
   font-weight: 700;
   font-size: 20px;
-  /*color: var(--accent-purple-light);*/
   cursor: pointer;
-  /*transition: color var(--transition-fast);*/
 }
 
 .logo:hover {
@@ -16,7 +14,6 @@
 .logo-icon {
   width: 60px;
   height: 60px;
-  /*background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));*/
   border-radius: 8px;
   display: flex;
   align-items: center;

@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idUser = (int)($_POST['id_user'] ?? 0);
     $reason = trim($_POST['reason'] ?? '');
 
-    // Prevent admin from banning themselves
     if ($idUser === (int)$_SESSION['id_user']) {
         $erreur = 'Vous ne pouvez pas vous bannir vous-même.';
     } elseif ($idUser > 0) {

@@ -46,9 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['role_id'] = $user['role_id'] ?? 1;
-                // track last activity for auto-logout
                 $_SESSION['last_activity'] = time();
-                // prevent session fixation
                 session_regenerate_id(true);
 
                 LogService::add('login_success', 'login.php', $user['id_user']);

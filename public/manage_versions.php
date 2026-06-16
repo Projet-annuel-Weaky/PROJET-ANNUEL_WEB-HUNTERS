@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Get all pending versions
 global $pdo;
 $stmt = $pdo->query("
     SELECT v.*, u.username, a.title AS article_title

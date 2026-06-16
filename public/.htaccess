@@ -1,33 +1,23 @@
-# Disable directory listing
 Options -Indexes
 
-# Enable rewrite engine
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
 
-    # Clean URLs for known resources
-    # /article/123 -> view_article.php?id_article=123
     RewriteRule ^article/([0-9]+)/?$ view_article.php?id_article=$1 [L,QSA]
-    # /category/12 -> category.php?id_category=12
     RewriteRule ^category/([0-9]+)/?$ category.php?id_category=$1 [L,QSA]
-    # /user/5 -> user.php?id_user=5
     RewriteRule ^user/([0-9]+)/?$ user.php?id_user=$1 [L,QSA]
 
-    # If the requested resource exists as a file or directory, serve it directly
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # Fallback to front controller
     RewriteRule ^(.*)$ index.php [L,QSA]
 </IfModule>
 
-# Custom error pages (served by PHP script which will set the correct code)
 ErrorDocument 404 /error.php
 ErrorDocument 500 /error.php
 
-# Security headers
 <IfModule mod_headers.c>
     Header always set X-Frame-Options "DENY"
     Header always set X-Content-Type-Options "nosniff"
@@ -35,7 +25,6 @@ ErrorDocument 500 /error.php
     Header always set Referrer-Policy "no-referrer-when-downgrade"
 </IfModule>
 
-# Protect sensitive file extensions
 <FilesMatch "\.(env|yml|yaml|ini|log|sql|sh|inc|bak)$">
     <IfModule mod_authz_core.c>
         Require all denied
@@ -45,7 +34,6 @@ ErrorDocument 500 /error.php
     </IfModule>
 </FilesMatch>
 
-# Prevent access to this .htaccess file
 <Files ".htaccess">
     <IfModule mod_authz_core.c>
         Require all denied
@@ -55,7 +43,6 @@ ErrorDocument 500 /error.php
     </IfModule>
 </Files>
 
-# Prevent accidental exposure of parent dirs if they are reachable
 RedirectMatch 403 ^/configs/.*$
 RedirectMatch 403 ^/src/.*$
 RedirectMatch 403 ^/\.git/.*$

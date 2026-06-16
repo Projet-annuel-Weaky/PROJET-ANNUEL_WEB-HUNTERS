@@ -117,7 +117,6 @@ async function validateCaptcha() {
       sendCaptchaStat("completed");
 
       if (data.token) {
-        // inject token into all forms so server can verify single-use token on submit
         document.querySelectorAll('form').forEach((form) => {
           let existing = form.querySelector('input[name="captcha_token"]');
           if (!existing) {

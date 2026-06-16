@@ -5,3 +5,4 @@ init.sh
 logs
 mysql-data
 configs/config.php
+install-deps.sh

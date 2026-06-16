@@ -47,7 +47,6 @@ try {
         "mimeType" => $selected["mime_type"],
     ]);
 } catch (Exception $ex) {
-    //logAction("fetch_image: Exception: " . $ex->getMessage());
     echo json_encode(["error" => $ex->getMessage()]);
     http_response_code(501);
 }

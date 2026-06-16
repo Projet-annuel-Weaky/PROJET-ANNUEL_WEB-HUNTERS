@@ -27,10 +27,9 @@ $_SESSION["captcha_valid"] = false;
 unset($_SESSION["captcha_validated_at"]);
 
 $now = time();
-// basic rate limiting and minimum solve time
 $attempts = $_SESSION['captcha_attempts'] ?? 0;
 $firstAttemptAt = $_SESSION['captcha_first_attempt_at'] ?? $now;
-if ($now - $firstAttemptAt > 900) { // reset window after 15 minutes
+if ($now - $firstAttemptAt > 900) {
     $attempts = 0;
     $_SESSION['captcha_first_attempt_at'] = $now;
 }
@@ -66,12 +65,10 @@ if ($cleanOrder === $cleanExpectedOrder) {
     $_SESSION["captcha_valid"] = true;
     $_SESSION["captcha_validated_at"] = time();
     $_SESSION["captcha_token"] = bin2hex(random_bytes(20));
-    // reset attempt counters on success
     unset($_SESSION['captcha_attempts'], $_SESSION['captcha_first_attempt_at']);
     echo json_encode(["success" => true, "token" => $_SESSION["captcha_token"]]);
     exit();
 }
 
-// increment attempt counter
 $_SESSION['captcha_attempts'] = ($_SESSION['captcha_attempts'] ?? 0) + 1;
 echo json_encode(["success" => false]);
