@@ -1,4 +1,7 @@
+
 <?php
+define("SESSION_TIMEOUT", 120);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
