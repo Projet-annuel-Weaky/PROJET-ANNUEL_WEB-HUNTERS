@@ -59,7 +59,7 @@ document.getElementById('search-form').addEventListener('submit', async function
     zone.innerHTML = '<p>Recherche en cours…</p>';
 
   try {
-    const response = await fetch('PROJET-ANNUEL_WEB-HUNTERS/public/search_article.php', {
+    const response = await fetch('/search_article.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ q })

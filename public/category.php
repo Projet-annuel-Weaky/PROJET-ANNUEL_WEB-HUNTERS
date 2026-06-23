@@ -91,7 +91,7 @@ document.getElementById('search-form').addEventListener('submit', async function
 
     try 
     {
-        const response = await fetch('PROJET-ANNUEL_WEB-HUNTERS/public/search_categorie.php', {
+        const response = await fetch('/search_categorie.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ q })
