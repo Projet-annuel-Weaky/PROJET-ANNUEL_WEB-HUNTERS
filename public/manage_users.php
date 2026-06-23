@@ -86,6 +86,7 @@ require_once SRC . "/views/layouts/header.php";
                 </select>
                 <button type="submit">Ajouter</button>
             </form>
+            
             <p><strong>DELETE_USER :</strong></p>
             <form class="del-user" action="delete_user.php" method="POST">
                 <input type="text" name="id_user" placeholder="ID USER :" required>
