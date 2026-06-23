@@ -26,11 +26,11 @@ $userRole = $connected && (($_SESSION['role_id'] ?? 0) == 2) ? 'Admin' : ($conne
     <div class='profile-dropdown-connected'>
         <aside>
             <ul>
-                <li><button><a href="profile.php">Mon Profil</a></button></li>
+                <li><a href="profile.php"><button>Mon Profil</button></a></li>
                 <?php if (($_SESSION['role_id'] ?? 0) == 2): ?>
-                    <li><button><a href="admin.php">Administration</a></button></li>
+                    <li><a href="admin.php"><button>Administration</button></a></li>
                 <?php endif; ?>
-                <li><button><a href="logout.php">Déconnexion</a></button></li>
+                <li><a href="logout.php"><button>Déconnexion</button></a></li>
             </ul>
         </aside>
     </div>
@@ -38,8 +38,8 @@ $userRole = $connected && (($_SESSION['role_id'] ?? 0) == 2) ? 'Admin' : ($conne
     <div class='profile-dropdown-disconnected'>
         <aside>
             <ul>
-                <li><button><a href="signup.php">Inscription</a></button></li>
-                <li><button><a href="login.php">Se Connecter</a></button></li>
+                <li><a href="signup.php"><button>Inscription</button></a></li>
+                <li><a href="login.php"><button>Se Connecter</button></a></li>
             </ul>
         </aside>
     </div>
