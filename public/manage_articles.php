@@ -108,7 +108,30 @@ require_once SRC . "/views/layouts/header.php";
                                     <td><?= htmlspecialchars($article['category_name'] ?? 'Sans catégorie', ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= htmlspecialchars($article['username'] ?? 'Inconnu', ENT_QUOTES, 'UTF-8') ?></td>
                                     <td class="col-actions">
-                                        <button type="button" data-modal-open="article-modal-<?= $article['id_article'] ?>">Détails</button>
+                                        <form method="POST">
+                                            <input type="hidden" name="action" value="update">
+                                            <input type="hidden" name="id_article" value="<?= $article['id_article'] ?>">
+                                            <input type="text" name="title" value="<?= htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') ?>" required>
+                                            <select name="id_category">
+                                                <option value="0">Sans catégorie</option>
+                                                <?php foreach ($categories as $category): ?>
+                                                    <option value="<?= $category['id_category'] ?>" <?= (int)($article['id_category'] ?? 0) === (int)$category['id_category'] ? 'selected' : '' ?>>
+                                                        <?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <select name="status">
+                                                <option value="draft" <?= $article['status'] === 'draft' ? 'selected' : '' ?>>Brouillon</option>
+                                                <option value="published" <?= $article['status'] === 'published' ? 'selected' : '' ?>>Publié</option>
+                                            </select>
+                                            <textarea name="content" required><?= htmlspecialchars($article['content'], ENT_QUOTES, 'UTF-8') ?></textarea>
+                                            <button type="submit">Modifier</button>
+                                        </form>
+                                        <form method="POST">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="id_article" value="<?= $article['id_article'] ?>">
+                                            <button type="submit">Supprimer</button>
+                                        </form>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

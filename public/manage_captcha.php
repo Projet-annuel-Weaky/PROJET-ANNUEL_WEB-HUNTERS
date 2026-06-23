@@ -54,7 +54,15 @@ require_once SRC . "/views/layouts/header.php";
                                     <td><?= $image['failed'] ?></td>
                                     <td><?= $image['reseted'] ?></td>
                                     <td class="col-actions">
-                                        <button type="button" data-modal-open="captcha-modal-<?= $image['id'] ?>">Détails</button>
+                                        <form action="captcha/activate.php" method="POST">
+                                            <input type="hidden" name="id" value="<?= $image['id'] ?>">
+                                            <input type="hidden" name="active" value="<?= $image['active'] ? 0 : 1 ?>">
+                                            <button type="submit"><?= $image['active'] ? 'Désactiver' : 'Activer' ?></button>
+                                        </form>
+                                        <form action="captcha/delete.php" method="POST" onsubmit="return confirm('Supprimer cette image ?');">
+                                            <input type="hidden" name="id" value="<?= $image['id'] ?>">
+                                            <button type="submit">Supprimer</button>
+                                        </form>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

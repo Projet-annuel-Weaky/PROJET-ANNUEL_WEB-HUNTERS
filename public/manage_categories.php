@@ -87,7 +87,18 @@ require_once SRC . "/views/layouts/header.php";
                                     <td><?= htmlspecialchars($category['total_articles'], ENT_QUOTES, 'UTF-8') ?></td>
                                     <td><?= (int) ($category['like_count'] ?? 0) ?></td>
                                     <td class="col-actions">
-                                        <button type="button" data-modal-open="category-modal-<?= $category['id_category'] ?>">Détails</button>
+                                        <form method="POST">
+                                            <input type="hidden" name="action" value="update">
+                                            <input type="hidden" name="id_category" value="<?= $category['id_category'] ?>">
+                                            <input type="text" name="name" value="<?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?>" required>
+                                            <textarea name="description"><?= htmlspecialchars($category['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+                                            <button type="submit">Modifier</button>
+                                        </form>
+                                        <form method="POST">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="id_category" value="<?= $category['id_category'] ?>">
+                                            <button type="submit">Supprimer</button>
+                                        </form>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
