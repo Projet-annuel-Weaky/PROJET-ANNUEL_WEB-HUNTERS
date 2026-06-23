@@ -59,22 +59,8 @@ require_once SRC . "/views/layouts/header.php";
 
 <main>
     <section>
-        <article>
-            <h1>ADMINISTRATION</h1>
-        </article>
-        <div class="admin-bar">
-            <button><a href="ban.php" class="admin-link">BAN</a></button>
-            <button><a href="admin.php" class="admin-link">HOME</a></button>
-            <button><a href="manage_users.php" class="admin-link">MANAGE_USER</a></button>
-            <button><a href="manage_roles.php" class="admin-link">MANAGE_ROLE</a></button>
-            <button><a href="manage_captcha.php" class="admin-link">MANAGE_CAPTCHA</a></button>
-            <button><a href="manage_newsletters.php" class="admin-link">MANAGE_NEWSLETTER</a></button>
-            <button><a href="manage_articles.php" class="admin-link">MANAGE_ARTICLE</a></button>
-            <button><a href="manage_categories.php" class="admin-link">MANAGE_SECTOR</a></button>
-            <button><a href="manage_versions.php" class="admin-link">MANAGE_VERSIONS</a></button>
-            <button><a href="logs.php" class="admin-link">LOGS</a></button>
-            <button><a href="index.php" class="admin-link">RETURN -> HOME</a></button>
-        </div>
+    <?php require SRC . "/views/layouts/adminNav.php" ?>
+
         <div class="admin-layout">
             <div class="admin-panel">
             <h2>MANAGE_USER</h2>
@@ -107,32 +93,30 @@ require_once SRC . "/views/layouts/header.php";
             </form>
             </div>
             <div class="admin-list">
-            <h2>Liste des utilisateurs</h2>
-            <div class="container">
-            <?php foreach ($users as $user): ?>
-                <div class="card">
-                    <h3>#<?= $user['id_user'] ?> - <?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?></h3>
-                    <p>Email : <?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8') ?></p>
-                    <form method="POST">
-                        <input type="hidden" name="action" value="update_user">
-                        <input type="hidden" name="id_user" value="<?= $user['id_user'] ?>">
-                        <select name="role_id">
-                            <?php foreach ($roles as $role): ?>
-                                <option value="<?= $role['role_id'] ?>" <?= (int)$user['role_id'] === (int)$role['role_id'] ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($role['name'], ENT_QUOTES, 'UTF-8') ?>
-                                </option>
+                <h2>Liste des utilisateurs</h2>
+                <div class="container">
+                    <table id="users-table" class="data-table">
+                        <thead>
+                            <tr><th>#</th><th>Username</th><th>Email</th><th>Rôle</th><th>Vérifié</th><th class="col-actions"></th></tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><?= $user['id_user'] ?></td>
+                                    <td><?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td><?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td><?= htmlspecialchars($user['role_name'], ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td><?= $user['is_verified'] ? 'oui' : 'non' ?></td>
+                                    <td class="col-actions">
+                                        <button type="button" data-modal-open="user-modal-<?= $user['id_user'] ?>">Détails</button>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
-                        </select>
-                        <select name="is_verified">
-                            <option value="1" <?= $user['is_verified'] ? 'selected' : '' ?>>VERIFIED</option>
-                            <option value="0" <?= !$user['is_verified'] ? 'selected' : '' ?>>NOT VERIFIED</option>
-                        </select>
-                        <button type="submit">Modifier</button>
-                    </form>
+                        </tbody>
+                    </table>
+                    <?php if (!$users): ?><p class="table-empty">Aucun utilisateur.</p><?php endif; ?>
                 </div>
-            <?php endforeach; ?>
-        </div>
-        </div>
+            </div>
         </div>
     </section>
 </main>

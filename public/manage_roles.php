@@ -23,30 +23,25 @@ require_once SRC . "/views/layouts/header.php";
 
 <main>
     <section>
-        <article>
-            <h1>ADMINISTRATION</h1>
-        </article>
-        <div class="admin-bar">
-            <button><a href="ban.php" class="admin-link">BAN</a></button>
-            <button><a href="admin.php" class="admin-link">HOME</a></button>
-            <button><a href="manage_users.php" class="admin-link">MANAGE_USER</a></button>
-            <button><a href="manage_roles.php" class="admin-link">MANAGE_ROLE</a></button>
-            <button><a href="manage_captcha.php" class="admin-link">MANAGE_CAPTCHA</a></button>
-            <button><a href="manage_newsletters.php" class="admin-link">MANAGE_NEWSLETTER</a></button>
-            <button><a href="manage_articles.php" class="admin-link">MANAGE_ARTICLE</a></button>
-            <button><a href="manage_categories.php" class="admin-link">MANAGE_SECTOR</a></button>
-            <button><a href="manage_versions.php" class="admin-link">MANAGE_VERSIONS</a></button>
-            <button><a href="logs.php" class="admin-link">LOGS</a></button>
-            <button><a href="index.php" class="admin-link">RETURN -> HOME</a></button>
-        </div>
+    <?php require SRC . "/views/layouts/adminNav.php" ?>
+
         <h2>Familles de droit</h2>
         <div class="container">
-            <?php foreach ($roles as $role): ?>
-                <div class="card">
-                    <h3>#<?= $role['role_id'] ?> - <?= htmlspecialchars($role['name'], ENT_QUOTES, 'UTF-8') ?></h3>
-                    <p>Utilisateurs : <?= $role['total_users'] ?></p>
-                </div>
-            <?php endforeach; ?>
+            <table id="roles-table" class="data-table">
+                <thead>
+                    <tr><th>#</th><th>Rôle</th><th>Utilisateurs</th></tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($roles as $role): ?>
+                        <tr>
+                            <td><?= $role['role_id'] ?></td>
+                            <td><?= htmlspecialchars($role['name'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= $role['total_users'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php if (!$roles): ?><p class="table-empty">Aucun rôle.</p><?php endif; ?>
         </div>
     </section>
 </main>
