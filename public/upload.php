@@ -6,10 +6,20 @@ define("SRC", ROOT . "/src");
 require_once CONFIG . "/config.php";
 require_once SRC . "/services/LogService.php";
 
+if (!isset($_SESSION['id_user'])) {
+    header('Location: login.php');
+    exit;
+}
+
 LogService::visit('profile.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profilePicture'])) {
-    $file = $_FILES['profilePicture'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
+    $file = $_FILES['avatar'];
+
+    $userId = $_SESSION['id_user'] ?? $_SESSION['id'] ?? null;
+    if (!$userId) {
+        die("User not logged in.");
+    }
 
     $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     $maxSize = 2 * 1024 * 1024;
@@ -17,28 +27,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profilePicture'])) {
     if ($file['error'] !== UPLOAD_ERR_OK) {
         die("Upload error.");
     }
-
     if (!in_array($file['type'], $allowedTypes)) {
         die("Invalid file type.");
     }
-
     if ($file['size'] > $maxSize) {
         die("File too large.");
     }
 
     $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
     $filename = uniqid('pp_', true) . '.' . $ext;
-    $targetPath = '/PROJET-ANNUEL_WEB-HUNTERS/assets/pp/' . $filename;
-    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-        $userId = $_SESSION['user_id'];
 
-        $stmt = $pdo->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
+    $uploadDir = ROOT . '/assets/pp/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    $targetPath = $uploadDir . $filename;
+
+    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+        $stmt = $pdo->prepare("UPDATE users SET avatar = ? WHERE id_user = ?");
         $stmt->execute([$filename, $userId]);
 
-        echo "Upload successful!";
-        header("Location: profile.php"); 
+        $_SESSION['avatar'] = $filename;
+
+        header("Location: profile.php");
         exit;
     } else {
-        echo "Failed to save the file.";
+        die("Failed to save the file.");
     }
 }

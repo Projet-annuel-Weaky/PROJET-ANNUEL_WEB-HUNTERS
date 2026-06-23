@@ -60,10 +60,10 @@ document.getElementById('search-form').addEventListener('submit', async function
     }
 
     zone.innerHTML = '<p>Recherche en cours…</p>';
-
+    
     try
     {
-        const response = await fetch('/PROJET_ANNUEL/PROJET-ANNUEL_WEB-HUNTERS/public/search_users.php', {
+        const response = await fetch('/PROJET-ANNUEL_WEB-HUNTERS/public/search_users.php', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ q })
