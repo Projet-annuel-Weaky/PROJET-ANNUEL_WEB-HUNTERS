@@ -33,8 +33,14 @@ include_once SRC . "/views/layouts/header.php";
         </form>
         <div class="profile-info">
             <h2>Informations personnelles</h2>
-            <p>Username : <?= htmlspecialchars($_SESSION['username'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
-            <p>Email : <?= htmlspecialchars($_SESSION['email'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+            <p>Username : <?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?></p>
+            <p>Email : <?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?></p>
+            <p>Rôle : <?= htmlspecialchars(ucfirst($roleName), ENT_QUOTES, 'UTF-8') ?></p>
+        </div>
+        <div class="profile-progress">
+            <h2>Progression</h2>
+            <p>Niveau : <strong><?= $level ?></strong> / <?= \App\Services\GamificationService::MAX_LEVEL ?><?= $rank !== '' ? ' — ' . htmlspecialchars($rank, ENT_QUOTES, 'UTF-8') : '' ?></p>
+            <p>XP : <?= $xp ?></p>
         </div>
     </section>
 </main>
