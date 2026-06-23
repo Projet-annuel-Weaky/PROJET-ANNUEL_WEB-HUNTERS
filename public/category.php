@@ -34,7 +34,7 @@ include_once SRC . "/views/layouts/header.php";
         </article>
         <div class = "searchandresultsContainer">
             <form id="search-form">
-                <input type="text" id="search-input" placeholder="Rechercher un utilisateur…" minlength="2" />
+                <input type="text" id="search-input" placeholder="Rechercher une catégorie..." minlength="2" />
                 <button type="submit">Rechercher</button>
             </form>
             <div id="search-results"></div>
@@ -79,7 +79,7 @@ include_once SRC . "/views/layouts/header.php";
 <script>
 document.getElementById('search-form').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const q    = document.getElementById('search-input').value.trim();
+  const q = document.getElementById('search-input').value.trim();
   const zone = document.getElementById('search-results');
 
   if (q.length < 2) 
@@ -91,7 +91,7 @@ document.getElementById('search-form').addEventListener('submit', async function
 
     try 
     {
-        const response = await fetch('/PROJET_ANNUEL/PROJET-ANNUEL_WEB-HUNTERS/public/search_categorie.php', {
+        const response = await fetch('PROJET-ANNUEL_WEB-HUNTERS/public/search_categorie.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ q })
