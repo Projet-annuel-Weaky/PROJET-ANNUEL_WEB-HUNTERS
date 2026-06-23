@@ -6,8 +6,6 @@ define("SRC", ROOT . "/src");
 require_once CONFIG . "/config.php";
 require_once SRC . "/services/LogService.php";
 
-session_start();
-
 if (!isset($_SESSION['id_user'])) {
     header('Location: login.php');
     exit;
@@ -24,11 +22,11 @@ include_once SRC . "/views/layouts/header.php";
     </article>
     <section>
         <span id="pp">
-            <?php $currentPicture = $_SESSION['profile_picture'] ?? 'DEFAULT_pp.png'; ?>
-            <img src="/PROJET-ANNUEL_WEB-HUNTERS/assets/pp/<?php echo htmlspecialchars($currentPicture); ?>" alt="Profile picture" width="150">
+            <?php $currentPicture = $_SESSION['avatar'] ?? 'DEFAULT_pp.png'; ?>
+            <img src="/PROJET_ANNUEL/PROJET-ANNUEL_WEB-HUNTERS/assets/pp/<?php echo htmlspecialchars($currentPicture); ?>" alt="Profile picture" width="150">
         </span>
         <form action="upload.php" method="POST" enctype="multipart/form-data">
-        <input type="file" name="profilePicture" accept="image/*" required>
+        <input type="file" name="avatar" accept="image/*" required>
         <button type="submit">import</button>
         </form>
         <div class="profile-info">

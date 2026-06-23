@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['role_id'] = $user['role_id'] ?? 1;
+                $_SESSION['avatar'] = $user['avatar'];
                 $_SESSION['last_activity'] = time();
                 session_regenerate_id(true);
 

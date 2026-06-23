@@ -60,7 +60,7 @@ document.getElementById('search-form').addEventListener('submit', async function
     }
 
     zone.innerHTML = '<p>Recherche en cours…</p>';
-
+    
     try
     {
         const response = await fetch('/search_users.php', {
