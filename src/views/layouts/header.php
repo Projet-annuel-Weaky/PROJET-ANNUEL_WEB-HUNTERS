@@ -84,8 +84,8 @@ $menuIconSrc =
             </header>
                 <div class='menu-dropdown'>
                     <aside>
-                        <button><a href="article.php">NAVIGATION</a></button>
-                        <button><a href="category.php">CATEGORIES</a></button>
-                        <button><a href="user.php">UTILISATEURS</a></button>
+                        <a href="article.php"><button>NAVIGATION</button></a>
+                        <a href="category.php"><button>CATEGORIES</button></a>
+                        <a href="user.php"><button>UTILISATEURS</button></a>
                     </aside>
                 </div>
