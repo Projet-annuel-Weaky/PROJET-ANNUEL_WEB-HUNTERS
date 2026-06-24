@@ -50,8 +50,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <script>
 document.getElementById('search-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const q = document.getElementById('search-input').value.trim();
-    const zone = document.getElementById('search-results');
+    const q       = document.getElementById('search-input').value.trim();
+    const zone    = document.getElementById('search-results');
 
     if (q.length < 2) 
     { 
@@ -63,7 +63,7 @@ document.getElementById('search-form').addEventListener('submit', async function
     
     try
     {
-        const response = await fetch('/search_users.php', {
+        const response = await fetch('/PROJET-ANNUEL_WEB-HUNTERS/public/search_users.php', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ q })
