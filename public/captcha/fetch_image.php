@@ -1,8 +1,8 @@
 <?php
-
 ini_set("display_errors", "1");
 error_reporting(E_ALL);
 
+define('ROOT', dirname(dirname(__DIR__)));
 require_once __DIR__ . "/../../configs/config.php";
 include_once "log.php";
 
@@ -17,9 +17,9 @@ unset(
 
 try {
     $stmt = $pdo->prepare('
-        SELECT id, filename, image_data, mime_type
+        SELECT id, filename, mime_type
         FROM captcha_images
-        WHERE active = TRUE AND image_data IS NOT NULL
+        WHERE active = TRUE
         ORDER BY RAND()
         LIMIT 1
     ');
@@ -33,20 +33,30 @@ try {
         exit();
     }
 
+    // Vérifier que le fichier existe bien sur le disque
+    $filePath = ROOT . '/assets/captcha/' . $selected['filename'];
+    if (!file_exists($filePath)) {
+        logAction("fetch_image: File not found on disk for id={$selected['id']} filename={$selected['filename']}.");
+        http_response_code(404);
+        echo json_encode(["error" => "Image file not found on server"]);
+        exit();
+    }
+
     $_SESSION["captcha_image_id"] = (int) $selected["id"];
     $_SESSION["captcha_expected_order"] = [1, 2, 3, 4];
     $_SESSION["captcha_fetched_at"] = time();
-    logAction(
-        "fetch_image: Served image id={$selected["id"]} filename={$selected["filename"]}.",
-    );
 
+    logAction("fetch_image: Served image id={$selected['id']} filename={$selected['filename']}.");
+
+    // On renvoie l'URL relative au lieu du base64
     echo json_encode([
-        "id" => $selected["id"],
+        "id"       => $selected["id"],
         "filename" => $selected["filename"],
-        "imageData" => base64_encode($selected["image_data"]),
+        "imageUrl" => "/PROJET_ANNUEL/PROJET-ANNUEL_WEB-HUNTERS/assets/captcha/" . rawurlencode($selected["filename"]),
         "mimeType" => $selected["mime_type"],
     ]);
 } catch (Exception $ex) {
+    logAction("fetch_image: Exception: " . $ex->getMessage());
+    http_response_code(500);
     echo json_encode(["error" => $ex->getMessage()]);
-    http_response_code(501);
 }

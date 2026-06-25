@@ -5,9 +5,9 @@ define("CONFIG", ROOT . "/configs");
 define("SRC", ROOT . "/src");
 
 require_once CONFIG . "/config.php";
-require_once SRC . "/services/AdminService.php";
+//require_once SRC . "/services/AdminService.php";
 
-AdminService::requireAdmin();
+//AdminService::requireAdmin();
 
 $sql = "SELECT id, filename, mime_type, active, reseted, completed, failed, created_at FROM captcha_images ORDER BY id ASC";
 $images = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);

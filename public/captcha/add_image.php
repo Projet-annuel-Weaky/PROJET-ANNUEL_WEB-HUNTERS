@@ -13,30 +13,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["image"])) {
         die("Upload error: " . $file["error"]);
     }
 
-    $ext = pathinfo($file["name"], PATHINFO_EXTENSION);
+    $ext = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
     $finfo = new finfo(FILEINFO_MIME_TYPE);
     $mimeType = $finfo->file($file["tmp_name"]);
 
     if (
-        !in_array(strtolower($ext), ["jpg", "jpeg", "png", "gif"]) ||
+        !in_array($ext, ["jpg", "jpeg", "png", "gif"]) ||
         !in_array($mimeType, ["image/jpeg", "image/png", "image/gif"])
     ) {
         logAction("add_image: Invalid file type ext=$ext mime=$mimeType.");
         die("Invalid file type. Only JPG, PNG, GIF allowed.");
     }
 
-    $imageData = file_get_contents($file["tmp_name"]);
-    if ($imageData === false) {
-        logAction("add_image: Failed to read uploaded file {$file["name"]}.");
-        die("Failed to read uploaded file.");
+    // Générer un nom unique pour éviter les collisions
+    $filename = uniqid('captcha_', true) . '.' . $ext;
+
+    $uploadDir = ROOT . '/assets/captcha/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
     }
 
-    $filename = basename($file["name"]);
+    $targetPath = $uploadDir . $filename;
+
+    if (!move_uploaded_file($file["tmp_name"], $targetPath)) {
+        logAction("add_image: Failed to move uploaded file to $targetPath.");
+        die("Failed to save the file.");
+    }
 
     $stmt = $pdo->prepare(
-        "INSERT INTO captcha_images (filename, image_data, mime_type, active, created_at) VALUES (?, ?, ?, 1, NOW())",
+        "INSERT INTO captcha_images (filename, mime_type, active, created_at) VALUES (?, ?, 1, NOW())"
     );
-    $stmt->execute([$filename, $imageData, $mimeType]);
+    $stmt->execute([$filename, $mimeType]);
 
     logAction("add_image: Inserted image filename=$filename mime=$mimeType.");
     header("Location: ../manage_captcha.php");

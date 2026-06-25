@@ -38,20 +38,22 @@ function loadCaptchaImage() {
     .then((response) => {
       if (!response.ok) {
         throw new Error("Unable to load captcha image");
-      }
-      return response.json();
+      } return response.json();
     })
     .then((data) => {
-      if (!data.imageData || !data.mimeType || !data.id) {
+      if (!data.id || (!data.imageUrl && !data.imageData)) {
         throw new Error("Invalid captcha image response");
       }
-
       currentImageId = data.id;
 
       return new Promise((resolve, reject) => {
         img.onload = () => resolve();
         img.onerror = () => reject(new Error("Unable to load captcha image."));
-        img.src = `data:${data.mimeType};base64,${data.imageData}`;
+        if (data.imageUrl) {
+          img.src = data.imageUrl;
+        } else {
+          img.src = `data:${data.mimeType};base64,${data.imageData}`;
+        }
       });
     });
 }
