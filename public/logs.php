@@ -9,26 +9,6 @@ require_once SRC . "/services/AdminService.php";
 
 AdminService::requireAdmin();
 
-if (isset($_POST['delete_all'])) {
-    $sql = "DELETE FROM logs";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit;
-}
-
-if (isset($_POST['delete_one'])) {
-    $id_log = $_POST['id_log'];
-
-    $sql = "DELETE FROM logs WHERE id_log = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$id_log]);
-
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit;
-}
-
 $allowedSorts = [
     'id_log',
     'id_user',
@@ -92,7 +72,7 @@ include_once SRC . "/views/layouts/header.php";
         <h2>Liste des logs</h2>
 
         <div class="logs-toolbar">
-            <input type="text" id="logFilter" placeholder="Filtrer par action, utilisateur, page, ip...">
+            <input type="text" id="logFilter" placeholder="Filtrer par action, utilisateur, page, ip, etc...">
 
             <form method="GET">
                 <select name="sort">
@@ -111,10 +91,6 @@ include_once SRC . "/views/layouts/header.php";
                 </select>
 
                 <button type="submit">Trier</button>
-            </form>
-
-            <form method="POST">
-                <button type="submit" name="delete_all">Supprimer tous les logs</button>
             </form>
         </div>
 
@@ -135,11 +111,6 @@ include_once SRC . "/views/layouts/header.php";
                     </div>
 
                     <p class="log-agent"><?= htmlspecialchars($log['user_agent'] ?? '') ?></p>
-
-                    <form method="POST" class="log-action-form">
-                        <input type="hidden" name="id_log" value="<?= $log['id_log'] ?>">
-                        <button type="submit" name="delete_one">Supprimer</button>
-                    </form>
                 </div>
             <?php endforeach; ?>
         </div>
