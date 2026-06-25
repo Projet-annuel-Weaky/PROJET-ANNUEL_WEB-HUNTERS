@@ -44,6 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
 
     $targetPath = $uploadDir . $filename;
 
+    $oldAvatar = $_SESSION['avatar'] ?? null;
+    if ($oldAvatar && $oldAvatar !== 'DEFAULT_pp.png') {
+    $oldPath = $uploadDir . $oldAvatar;
+    if (file_exists($oldPath)) {
+        unlink($oldPath);
+        }
+    }       
+
     if (move_uploaded_file($file['tmp_name'], $targetPath)) {
         $stmt = $pdo->prepare("UPDATE users SET avatar = ? WHERE id_user = ?");
         $stmt->execute([$filename, $userId]);
