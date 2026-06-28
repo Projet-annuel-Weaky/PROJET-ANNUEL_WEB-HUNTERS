@@ -1,4 +1,3 @@
-// Recherche globale dynamique
 const searchInput = document.getElementById('searchInput');
 const searchIcon = document.querySelector('.search-icon');
 const searchBar = document.querySelector('.search-bar');
@@ -7,20 +6,19 @@ let globalSearchTimeout;
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.trim();
-        
+
         clearTimeout(globalSearchTimeout);
-        
+
         if (query.length < 2) {
             hideSearchResults();
             return;
         }
-        
+
         globalSearchTimeout = setTimeout(() => {
             performGlobalSearch(query);
         }, 300);
     });
-    
-    // Fermer le dropdown quand on clique ailleurs
+
     document.addEventListener('click', (e) => {
         if (!searchBar.contains(e.target)) {
             hideSearchResults();
@@ -28,7 +26,6 @@ if (searchInput) {
     });
 }
 
-// Bouton de recherche redirige vers la page de résultats
 if (searchIcon) {
     searchIcon.addEventListener('click', (e) => {
         e.preventDefault();
@@ -39,7 +36,6 @@ if (searchIcon) {
     });
 }
 
-// Appui sur Entrée pour soumettre la recherche
 if (searchInput) {
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
@@ -61,21 +57,21 @@ async function performGlobalSearch(query) {
             },
             body: JSON.stringify({ q: query })
         });
-        
+
         if (!response.ok) throw new Error('Erreur réseau');
-        
+
         const data = await response.json();
-        
+
         if (data.error) {
             console.error('Erreur:', data.error);
             return;
         }
-        
+
         if (data.count === 0) {
             showNoResults(query);
             return;
         }
-        
+
         displaySearchResults(data);
     } catch (error) {
         console.error('Erreur recherche:', error);
@@ -85,8 +81,7 @@ async function performGlobalSearch(query) {
 function displaySearchResults(data) {
     const results = data.results;
     let html = '<div class="search-results-dropdown">';
-    
-    // Articles
+
     if (results.articles.length > 0) {
         html += '<div class="search-category"><span class="category-title">Articles</span>';
         results.articles.forEach(article => {
@@ -100,8 +95,7 @@ function displaySearchResults(data) {
         });
         html += '</div>';
     }
-    
-    // Utilisateurs
+
     if (results.users.length > 0) {
         html += '<div class="search-category"><span class="category-title">Utilisateurs</span>';
         results.users.forEach(user => {
@@ -115,8 +109,7 @@ function displaySearchResults(data) {
         });
         html += '</div>';
     }
-    
-    // Catégories
+
     if (results.categories.length > 0) {
         html += '<div class="search-category"><span class="category-title">Catégories</span>';
         results.categories.forEach(cat => {
@@ -129,12 +122,12 @@ function displaySearchResults(data) {
         });
         html += '</div>';
     }
-    
+
     html += '</div>';
-    
+
     const existingDropdown = document.querySelector('.search-results-dropdown');
     if (existingDropdown) existingDropdown.remove();
-    
+
     searchBar.insertAdjacentHTML('beforeend', html);
 }
 
@@ -146,10 +139,10 @@ function showNoResults(query) {
             </div>
         </div>
     `;
-    
+
     const existingDropdown = document.querySelector('.search-results-dropdown');
     if (existingDropdown) existingDropdown.remove();
-    
+
     searchBar.insertAdjacentHTML('beforeend', html);
 }
 

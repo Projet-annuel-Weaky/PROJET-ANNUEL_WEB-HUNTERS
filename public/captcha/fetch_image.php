@@ -33,7 +33,6 @@ try {
         exit();
     }
 
-    // Vérifier que le fichier existe bien sur le disque
     $filePath = ROOT . '/assets/captcha/' . $selected['filename'];
     if (!file_exists($filePath)) {
         logAction("fetch_image: File not found on disk for id={$selected['id']} filename={$selected['filename']}.");
@@ -48,7 +47,6 @@ try {
 
     logAction("fetch_image: Served image id={$selected['id']} filename={$selected['filename']}.");
 
-    // On renvoie l'URL relative au lieu du base64
     echo json_encode([
         "id"       => $selected["id"],
         "filename" => $selected["filename"],
