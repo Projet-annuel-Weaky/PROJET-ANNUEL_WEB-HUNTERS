@@ -71,7 +71,6 @@ if (mb_strlen($query) >= 2) {
 
         $hasResults = count($results['articles']) > 0 || count($results['users']) > 0 || count($results['categories']) > 0;
     } catch (PDOException $e) {
-        // Erreur BDD
     }
 }
 

@@ -46,7 +46,7 @@ require_once SRC . "/views/layouts/header.php";
 
 <main>
     <?php require SRC . "/views/layouts/adminNav.php" ?>
-    
+
     <section>
         <h2>Versions en attente de validation</h2>
 
@@ -58,31 +58,44 @@ require_once SRC . "/views/layouts/header.php";
         <?php endif; ?>
 
         <?php if (!$pendingVersions): ?>
-            <p>Aucune version en attente.</p>
+            <p class="versions-empty">Aucune version en attente de validation.</p>
         <?php endif; ?>
 
         <div class="container">
             <?php foreach ($pendingVersions as $v): ?>
-                <div class="card">
-                    <h3>Article : <?= htmlspecialchars($v['article_title'], ENT_QUOTES, 'UTF-8') ?></h3>
-                    <p>Version proposée par : <?= htmlspecialchars($v['username'] ?? 'Anonyme', ENT_QUOTES, 'UTF-8') ?></p>
-                    <p>Date : <?= htmlspecialchars($v['created_at'], ENT_QUOTES, 'UTF-8') ?></p>
-                    <p>Nouveau titre : <?= htmlspecialchars($v['title'], ENT_QUOTES, 'UTF-8') ?></p>
-                    <details>
+                <div class="card version-card">
+                    <div class="version-card__header">
+                        <span class="version-badge version-badge--pending">En attente</span>
+                        <span class="version-card__num">v<?= (int)$v['version_number'] ?></span>
+                    </div>
+
+                    <h3><?= htmlspecialchars($v['article_title'], ENT_QUOTES, 'UTF-8') ?></h3>
+
+                    <p class="version-card__meta">
+                        <span>Par <strong><?= htmlspecialchars($v['username'] ?? 'Anonyme', ENT_QUOTES, 'UTF-8') ?></strong></span>
+                        <span class="version-card__date"><?= htmlspecialchars(date('d/m/Y à H:i', strtotime($v['created_at'])), ENT_QUOTES, 'UTF-8') ?></span>
+                    </p>
+
+                    <p><strong>Titre proposé :</strong> <?= htmlspecialchars($v['title'], ENT_QUOTES, 'UTF-8') ?></p>
+
+                    <details class="version-card__details">
                         <summary>Voir le contenu proposé</summary>
-                        <div><?= nl2br(htmlspecialchars($v['content'], ENT_QUOTES, 'UTF-8')) ?></div>
+                        <div class="version-card__content"><?= nl2br(htmlspecialchars($v['content'], ENT_QUOTES, 'UTF-8')) ?></div>
                     </details>
-                    <form method="POST" style="display:inline">
-                        <input type="hidden" name="action" value="approve">
-                        <input type="hidden" name="id_version" value="<?= $v['id_version'] ?>">
-                        <button type="submit">Approuver</button>
-                    </form>
-                    <form method="POST" style="display:inline">
-                        <input type="hidden" name="action" value="reject">
-                        <input type="hidden" name="id_version" value="<?= $v['id_version'] ?>">
-                        <button type="submit">Rejeter</button>
-                    </form>
-                    <a href="view_article.php?id_article=<?= $v['id_article'] ?>">Voir l'article actuel</a>
+
+                    <div class="version-card__actions">
+                        <form method="POST">
+                            <input type="hidden" name="action" value="approve">
+                            <input type="hidden" name="id_version" value="<?= $v['id_version'] ?>">
+                            <button type="submit" class="btn-approve">✓ Approuver</button>
+                        </form>
+                        <form method="POST">
+                            <input type="hidden" name="action" value="reject">
+                            <input type="hidden" name="id_version" value="<?= $v['id_version'] ?>">
+                            <button type="submit" class="btn-reject">✗ Rejeter</button>
+                        </form>
+                        <a href="view_article.php?id_article=<?= $v['id_article'] ?>">Voir l'article</a>
+                    </div>
                 </div>
             <?php endforeach; ?>
         </div>
