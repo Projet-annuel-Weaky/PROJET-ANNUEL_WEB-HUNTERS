@@ -2,6 +2,8 @@ const searchInput = document.getElementById('searchInput');
 const searchIcon = document.querySelector('.search-icon');
 const searchBar = document.querySelector('.search-bar');
 let globalSearchTimeout;
+const EASTER_EGG_TERM = 'sananes';
+const EASTER_EGG_URL = 'https://www.youtube.com/watch?v=YMFWy8l-SFw&t=4s';
 
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -30,9 +32,7 @@ if (searchIcon) {
     searchIcon.addEventListener('click', (e) => {
         e.preventDefault();
         const query = searchInput?.value.trim() || '';
-        if (query.length >= 2) {
-            window.location.href = `search_results.php?q=${encodeURIComponent(query)}`;
-        }
+        handleSearchSubmit(query);
     });
 }
 
@@ -41,11 +41,20 @@ if (searchInput) {
         if (e.key === 'Enter') {
             e.preventDefault();
             const query = e.target.value.trim();
-            if (query.length >= 2) {
-                window.location.href = `search_results.php?q=${encodeURIComponent(query)}`;
-            }
+            handleSearchSubmit(query);
         }
     });
+}
+
+function handleSearchSubmit(query) {
+    if (!query || query.length < 2) return;
+
+    if (query.toLowerCase() === EASTER_EGG_TERM) {
+        window.location.href = EASTER_EGG_URL;
+        return;
+    }
+
+    window.location.href = `search_results.php?q=${encodeURIComponent(query)}`;
 }
 
 async function performGlobalSearch(query) {
