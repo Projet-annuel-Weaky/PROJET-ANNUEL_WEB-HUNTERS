@@ -45,18 +45,18 @@ include_once SRC . "/views/layouts/header.php";
 </main>
 
 <script>
-document.getElementById('search-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
+let searchTimeout;
+
+async function performSearch() {
   const q = document.getElementById('search-input').value.trim();
   const zone = document.getElementById('search-results');
 
-  if (q.length < 2) 
-    { 
-        zone.innerHTML = '<p>Saisissez au moins 2 caractères.</p>';
-        return;
-    }
+  if (q.length < 2) {
+    zone.innerHTML = '';
+    return;
+  }
 
-    zone.innerHTML = '<p>Recherche en cours…</p>';
+  zone.innerHTML = '<p>Recherche en cours…</p>';
 
   try {
     const response = await fetch('/search_article.php', {
@@ -91,6 +91,19 @@ document.getElementById('search-form').addEventListener('submit', async function
   } catch (err) {
     zone.innerHTML = `<p style="color:red;">Erreur : ${err.message}</p>`;
   }
+}
+
+
+document.getElementById('search-input').addEventListener('input', function() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(performSearch, 300);
+});
+
+
+document.getElementById('search-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  clearTimeout(searchTimeout);
+  performSearch();
 });
 
 function escHtml(str) {
