@@ -118,6 +118,17 @@ document.getElementById('search-form').addEventListener('submit', async function
     }
 
     zone.innerHTML = '<p>Recherche en cours…</p>';
+let searchTimeout;
+
+async function performSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  const zone = document.getElementById('search-results');
+
+  if (q.length < 2) {
+    zone.innerHTML = '';
+    return;
+  }
+  zone.innerHTML = '<p>Recherche en cours…</p>';
 
     try {
         const response = await fetch('/search_categorie.php', {
@@ -127,7 +138,6 @@ document.getElementById('search-form').addEventListener('submit', async function
         });
 
         if (!response.ok) throw new Error('Erreur serveur : ' + response.status);
-
         const data = await response.json();
 
         if (data.count === 0) {
@@ -152,6 +162,16 @@ document.getElementById('search-form').addEventListener('submit', async function
     } catch (err) {
         zone.innerHTML = `<p style="color:red;">Erreur : ${err.message}</p>`;
     }
+
+document.getElementById('search-input').addEventListener('input', function() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(performSearch, 300);
+});
+
+document.getElementById('search-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  clearTimeout(searchTimeout);
+  performSearch();
 });
 
 function escHtml(str) {

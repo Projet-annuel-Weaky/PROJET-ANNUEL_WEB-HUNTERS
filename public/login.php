@@ -42,6 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $erreur = 'Votre compte doit être vérifié par email avant la connexion.';
                 LogService::add('login_failed', 'login.php', $user['id_user']);
             } else {
+                $update = $pdo->prepare("
+                    UPDATE users
+                    SET last_activity = NOW(),
+                        last_reminder_at = NULL,
+                        reminder_count = 0
+                    WHERE id_user = ?
+                ");
+                $update->execute([$user['id_user']]);
+
                 $_SESSION['id_user'] = $user['id_user'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['email'] = $user['email'];
