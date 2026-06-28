@@ -17,3 +17,7 @@
 @import "darkmode.css";
 
 @import "table.css";
+
+@import "search-global.css";
+
+@import "search-results.css";
