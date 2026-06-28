@@ -21,23 +21,47 @@ try {
         FROM captcha_images
         WHERE active = TRUE
         ORDER BY RAND()
-        LIMIT 1
     ');
     $stmt->execute();
-    $selected = $stmt->fetch(PDO::FETCH_ASSOC);
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if (!$selected) {
+    if (!$rows) {
         logAction("fetch_image: No active captcha images found.");
         http_response_code(404);
         echo json_encode(["error" => "No active captcha images found"]);
         exit();
     }
 
-    $filePath = ROOT . '/assets/captcha/' . $selected['filename'];
-    if (!file_exists($filePath)) {
-        logAction("fetch_image: File not found on disk for id={$selected['id']} filename={$selected['filename']}.");
+    $selected = null;
+    $rawImage = null;
+    $resolvedMime = null;
+    foreach ($rows as $row) {
+        $filePath = ROOT . '/assets/captcha/' . $row['filename'];
+        if (file_exists($filePath) && is_readable($filePath)) {
+            $raw = file_get_contents($filePath);
+            if ($raw === false || $raw === '') {
+                logAction("fetch_image: Skipped unreadable file id={$row['id']} filename={$row['filename']}.");
+                continue;
+            }
+            $selected = $row;
+            $rawImage = $raw;
+            $resolvedMime = $row["mime_type"] ?: "image/jpeg";
+            if (class_exists("finfo")) {
+                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                $detected = $finfo->buffer($raw);
+                if ($detected) {
+                    $resolvedMime = $detected;
+                }
+            }
+            break;
+        }
+        logAction("fetch_image: Skipped missing file id={$row['id']} filename={$row['filename']}.");
+    }
+
+    if (!$selected) {
+        logAction("fetch_image: No usable captcha image found on server.");
         http_response_code(404);
-        echo json_encode(["error" => "Image file not found on server"]);
+        echo json_encode(["error" => "No usable captcha image found"]);
         exit();
     }
 
@@ -50,8 +74,8 @@ try {
     echo json_encode([
         "id"       => $selected["id"],
         "filename" => $selected["filename"],
-        "imageUrl" => "/PROJET_ANNUEL/PROJET-ANNUEL_WEB-HUNTERS/assets/captcha/" . rawurlencode($selected["filename"]),
-        "mimeType" => $selected["mime_type"],
+        "imageData" => base64_encode($rawImage),
+        "mimeType" => $resolvedMime,
     ]);
 } catch (Exception $ex) {
     logAction("fetch_image: Exception: " . $ex->getMessage());
