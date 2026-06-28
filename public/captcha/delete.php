@@ -8,7 +8,6 @@ AdminService::requireAdmin("../login.php");
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST["id"])) {
     $id = intval($_POST["id"]);
 
-    // Récupérer le nom du fichier avant suppression
     $stmt = $pdo->prepare("SELECT filename FROM captcha_images WHERE id = :id");
     $stmt->bindParam(":id", $id, PDO::PARAM_INT);
     $stmt->execute();

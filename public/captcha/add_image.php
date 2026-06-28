@@ -25,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["image"])) {
         die("Invalid file type. Only JPG, PNG, GIF allowed.");
     }
 
-    // Générer un nom unique pour éviter les collisions
     $filename = uniqid('captcha_', true) . '.' . $ext;
 
     $uploadDir = ROOT . '/assets/captcha/';
