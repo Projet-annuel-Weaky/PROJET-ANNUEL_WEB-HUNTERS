@@ -74,19 +74,19 @@ include_once SRC . "/views/layouts/header.php";
 ?>
 
 <main>
-    <article>
+    <header class="profile-header">
         <h1>PROFIL</h1>
-    </article>
+    </header>
     <section>
-        <span id="pp">
+        <div id="pp">
         <?php $currentPicture = $_SESSION['avatar'] ?? 'DEFAULT_pp.png'; ?>
         <img src="avatar.php?file=<?= rawurlencode($currentPicture) ?>"
          alt="Profile picture"
          width="150">
-        </span>
+        </div>
         <form action="upload.php" method="POST" enctype="multipart/form-data">
-        <input type="file" name="avatar" accept="image/*" required>
-        <button type="submit">import</button>
+            <input type="file" name="avatar" accept="image/*" aria-label="Choisir une image de profil" required>
+            <button type="submit">import</button>
         </form>
        <div class="profile-info">
     <h2>Informations personnelles</h2>
@@ -124,6 +124,7 @@ include_once SRC . "/views/layouts/header.php";
     <form action="profile.php" method="POST">
         <input type="hidden" name="update_bio" value="1">
 
+        <label for="bio">Votre biographie</label>
         <textarea id="bio" name="bio" 
                   maxlength="255" 
                   rows="4"

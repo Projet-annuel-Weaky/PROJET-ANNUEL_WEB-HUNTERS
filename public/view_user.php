@@ -32,21 +32,22 @@ include_once SRC . "/views/layouts/header.php";
         <?php if ($user): ?>
             <?php $avatar = !empty($user["avatar"]) ? $user["avatar"] : "DEFAULT_pp.png"; ?>
             <article class="card">
+                <h1>Profil de l'utilisateur</h1>
                 <p>
-                    <img src="avatar.php?file=<?= rawurlencode($avatar) ?>" alt="Photo de profil" width="150">
+                    <img src="avatar.php?file=<?= rawurlencode($avatar) ?>" alt="Photo de profil de <?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?>" width="150">
                 </p>
-                <h1><?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?></h1>
+                <h2><?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?></h2>
                 <p>Rôle : <?= htmlspecialchars($user['role_name'] ?? 'Utilisateur', ENT_QUOTES, 'UTF-8') ?></p>
 
                 <?php if (!empty($user['bio'])): ?>
                     <p><?= nl2br(htmlspecialchars($user['bio'], ENT_QUOTES, 'UTF-8')) ?></p>
                 <?php else: ?>
-                    <p>Aucune bio.</p>
+                    <p>Aucune bio disponible.</p>
                 <?php endif; ?>
 
                 <?php if ($isAdmin): ?>
                     <hr>
-                    <h2>Réservé admin</h2>
+                    <h3>Informations d'administration</h3>
                     <p>ID : <?= (int)$user['id_user'] ?></p>
                     <p>Email : <?= htmlspecialchars($user['email'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
                     <p>Vérifié : <?= ((int)($user['is_verified'] ?? 0) === 1) ? 'oui' : 'non' ?></p>
@@ -58,11 +59,13 @@ include_once SRC . "/views/layouts/header.php";
         <?php else: ?>
             <article>
                 <h1>Utilisateur introuvable</h1>
-                <p>Cet utilisateur n'existe pas.</p>
-                <a href="user.php">Retour à la liste des utilisateurs</a>
+                <p>Cet utilisateur n'existe pas ou a été supprimé.</p>
+                <p><a href="user.php">Retour à la liste des utilisateurs</a></p>
             </article>
         <?php endif; ?>
     </section>
 </main>
 
-<?php include_once SRC . '/views/layouts/footer.php'; ?>
+<?php
+include_once SRC . '/views/layouts/footer.php';
+?>

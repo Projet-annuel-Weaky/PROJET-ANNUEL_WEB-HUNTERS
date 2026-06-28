@@ -67,8 +67,8 @@ require_once SRC . "/views/layouts/header.php";
                 <?php endif; ?>
                 <form method="POST">
                     <input type="hidden" name="action" value="create">
-                    <input type="text" name="name" placeholder="Nom" required>
-                    <textarea name="description" placeholder="Description"></textarea>
+                    <input type="text" name="name" placeholder="Nom" aria-label="Nom de la catégorie" required>
+                    <textarea name="description" placeholder="Description" aria-label="Description de la catégorie"></textarea>
                     <button type="submit">Créer</button>
                 </form>
             </div>
@@ -77,7 +77,7 @@ require_once SRC . "/views/layouts/header.php";
                 <div class="container">
                     <table id="categories-table" class="data-table">
                         <thead>
-                            <tr><th>#</th><th>Nom</th><th>Articles publiés</th><th>Likes</th><th class="col-actions"></th></tr>
+                            <tr><th>#</th><th>Nom</th><th>Articles publiés</th><th>Likes</th><th class="col-actions">Actions</th></tr>
                         </thead>
                         <tbody>
                             <?php foreach ($categories as $category): ?>
@@ -90,8 +90,8 @@ require_once SRC . "/views/layouts/header.php";
                                         <form method="POST">
                                             <input type="hidden" name="action" value="update">
                                             <input type="hidden" name="id_category" value="<?= $category['id_category'] ?>">
-                                            <input type="text" name="name" value="<?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?>" required>
-                                            <textarea name="description"><?= htmlspecialchars($category['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+                                            <input type="text" name="name" value="<?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?>" aria-label="Modifier le nom" required>
+                                            <textarea name="description" aria-label="Modifier la description"><?= htmlspecialchars($category['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
                                             <button type="submit">Modifier</button>
                                         </form>
                                         <form method="POST">

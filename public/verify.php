@@ -39,7 +39,7 @@ include_once SRC . "/views/layouts/header.php";
         <h1>Vérification du compte</h1>
         <p><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php if ($success): ?>
-            <a href="login.php">Se connecter</a>
+            <p><a href="login.php">Se connecter</a></p>
         <?php endif; ?>
     </section>
 </main>

@@ -5,9 +5,6 @@ define("CONFIG", ROOT . "/configs");
 define("SRC", ROOT . "/src");
 
 require_once CONFIG . "/config.php";
-//require_once SRC . "/services/AdminService.php";
-
-//AdminService::requireAdmin();
 
 $sql = "SELECT id, filename, mime_type, active, reseted, completed, failed, created_at FROM captcha_images ORDER BY id ASC";
 $images = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
@@ -33,7 +30,7 @@ require_once SRC . "/views/layouts/header.php";
                     <p><strong>Total Reseted:</strong> <?= htmlspecialchars($totals['total_reseted'] ?? 0, ENT_QUOTES, 'UTF-8') ?></p>
                 </div>
                 <form action="captcha/add_image.php" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="image" accept="image/png,image/jpeg,image/gif" required>
+                    <input type="file" name="image" accept="image/png,image/jpeg,image/gif" aria-label="Sélectionner une image de captcha" required>
                     <button type="submit">Ajouter une image</button>
                 </form>
             </div>
@@ -42,7 +39,7 @@ require_once SRC . "/views/layouts/header.php";
                 <div class="container">
                     <table id="captcha-table" class="data-table">
                         <thead>
-                            <tr><th>#</th><th>Fichier</th><th>Active</th><th>Réussites</th><th>Échecs</th><th>Reset</th><th class="col-actions"></th></tr>
+                            <tr><th>#</th><th>Fichier</th><th>Active</th><th>Réussites</th><th>Échecs</th><th>Reset</th><th class="col-actions">Actions</th></tr>
                         </thead>
                         <tbody>
                             <?php foreach ($images as $image): ?>

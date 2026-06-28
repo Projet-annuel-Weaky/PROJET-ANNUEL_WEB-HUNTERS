@@ -46,9 +46,9 @@ require_once SRC . "/views/layouts/header.php";
                     <p class="success"><?= htmlspecialchars($succes, ENT_QUOTES, 'UTF-8') ?></p>
                 <?php endif; ?>
                 <form method="POST">
-                    <input type="text" name="title" placeholder="Titre" required>
-                    <input type="text" name="subject" placeholder="Sujet email" required>
-                    <textarea name="content" placeholder="Contenu" required></textarea>
+                    <input type="text" name="title" placeholder="Titre" aria-label="Titre de la newsletter" required>
+                    <input type="text" name="subject" placeholder="Sujet email" aria-label="Sujet du courriel" required>
+                    <textarea name="content" placeholder="Contenu" aria-label="Contenu de la newsletter" required></textarea>
                     <button type="submit">Créer</button>
                 </form>
             </div>
@@ -57,7 +57,7 @@ require_once SRC . "/views/layouts/header.php";
                 <div class="container">
                     <table id="newsletters-table" class="data-table">
                         <thead>
-                            <tr><th>#</th><th>Titre</th><th>Sujet</th><th>Statut</th><th>Modifiée</th><th class="col-actions"></th></tr>
+                            <tr><th>#</th><th>Titre</th><th>Sujet</th><th>Statut</th><th>Modifiée</th><th class="col-actions">Actions</th></tr>
                         </thead>
                         <tbody>
                             <?php foreach ($newsletters as $newsletter): ?>
@@ -81,7 +81,7 @@ require_once SRC . "/views/layouts/header.php";
                 <div class="container">
                     <table id="history-table" class="data-table">
                         <thead>
-                            <tr><th>#</th><th>Titre</th><th>Sujet</th><th>Destinataires</th><th>Envoyée</th><th class="col-actions"></th></tr>
+                            <tr><th>#</th><th>Titre</th><th>Sujet</th><th>Destinataires</th><th>Envoyée</th><th class="col-actions">Actions</th></tr>
                         </thead>
                         <tbody>
                             <?php foreach ($history as $item): ?>

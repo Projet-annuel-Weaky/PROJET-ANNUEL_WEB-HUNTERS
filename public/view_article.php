@@ -84,11 +84,11 @@ include_once SRC . "/views/layouts/header.php";
                                     : ((int)$v['version_number'] === (int)$maxVersionNum);
                             ?>
                             <li class="version-item <?= $isActive ? 'version-item--active' : '' ?>">
-                                <a href="view_article.php?id_article=<?= $article['id_article'] ?>&version=<?= $v['id_version'] ?>" class="version-link">
+                                <a href="view_article.php?id_article=<?= $article['id_article'] ?>&amp;version=<?= $v['id_version'] ?>" class="version-link">
                                     <span class="version-number">v<?= (int)$v['version_number'] ?></span>
                                     <span class="version-meta">
                                         <span class="version-author"><?= htmlspecialchars($v['username'] ?? 'Anonyme', ENT_QUOTES, 'UTF-8') ?></span>
-                                        <span class="version-date"><?= htmlspecialchars(date('d/m/Y H:i', strtotime($v['created_at'])), ENT_QUOTES, 'UTF-8') ?></span>
+                                        <span class="version-date">le <?= htmlspecialchars(date('d/m/Y H:i', strtotime($v['created_at'])), ENT_QUOTES, 'UTF-8') ?></span>
                                     </span>
                                 </a>
                             </li>
@@ -144,7 +144,7 @@ include_once SRC . "/views/layouts/header.php";
             <article>
                 <h1>Article introuvable</h1>
                 <p>Cet article n'existe pas ou n'est pas publié.</p>
-                <a href="article.php">Retour aux articles</a>
+                <p><a href="article.php">Retour aux articles</a></p>
             </article>
         <?php endif; ?>
     </section>

@@ -70,26 +70,27 @@ require_once SRC . "/views/layouts/header.php";
             <?php if ($succes): ?>
                 <p class="success"><?= htmlspecialchars($succes, ENT_QUOTES, 'UTF-8') ?></p>
             <?php endif; ?>
-            <p><strong>ADD USER :</strong></p>
+            
+            <h3>ADD USER :</h3>
             <form class="add-user" action="add_user.php" method="POST">
-                <input type="text" name="username" placeholder="USERNAME :" required>
-                <input type="email" name="email" placeholder="EMAIL :" required>
-                <input type="password" name="password" placeholder="PASSWORD :" required>
-                <select name="role_id">
+                <input type="text" name="username" placeholder="USERNAME :" aria-label="Nom d'utilisateur" required>
+                <input type="email" name="email" placeholder="EMAIL :" aria-label="Adresse email" required>
+                <input type="password" name="password" placeholder="PASSWORD :" aria-label="Mot de passe" required>
+                <select name="role_id" aria-label="Rôle de l'utilisateur">
                     <?php foreach ($roles as $role): ?>
                         <option value="<?= $role['role_id'] ?>"><?= htmlspecialchars($role['name'], ENT_QUOTES, 'UTF-8') ?></option>
                     <?php endforeach; ?>
                 </select>
-                <select name="is_verified">
+                <select name="is_verified" aria-label="Statut de vérification">
                     <option value="1">VERIFIED</option>
                     <option value="0">NOT VERIFIED</option>
                 </select>
                 <button type="submit">Ajouter</button>
             </form>
             
-            <p><strong>DELETE_USER :</strong></p>
+            <h3>DELETE_USER :</h3>
             <form class="del-user" action="delete_user.php" method="POST">
-                <input type="text" name="id_user" placeholder="ID USER :" required>
+                <input type="text" name="id_user" placeholder="ID USER :" aria-label="Identifiant utilisateur à supprimer" required>
                 <button type="submit">Supprimer</button>
             </form>
             </div>
@@ -98,7 +99,7 @@ require_once SRC . "/views/layouts/header.php";
                 <div class="container">
                     <table id="users-table" class="data-table">
                         <thead>
-                            <tr><th>#</th><th>Username</th><th>Email</th><th>Rôle</th><th>Vérifié</th><th class="col-actions"></th></tr>
+                            <tr><th>#</th><th>Username</th><th>Email</th><th>Rôle</th><th>Vérifié</th><th class="col-actions">Actions</th></tr>
                         </thead>
                         <tbody>
                             <?php foreach ($users as $user): ?>

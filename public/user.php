@@ -13,49 +13,48 @@ include_once SRC . "/views/layouts/header.php";
     
 <main>
     <section>
-        <article>
+        <header>
             <h1>UTILISATEURS</h1>
-        </article>
-        <div class = "searchandresultsContainer">
+        </header>
+        <div class="searchandresultsContainer">
             <form id="search-form">
-                <input type="text" id="search-input" placeholder="Rechercher un utilisateur…" minlength="2" />
+                <input type="text" id="search-input" placeholder="Rechercher un utilisateur…" minlength="2" aria-label="Rechercher un utilisateur">
                 <button type="submit">Rechercher</button>
             </form>
-        <div id="search-results"></div>
+            <div id="search-results"></div>
         </div>
     </section>
 
-<?php
-$sql = "SELECT id_user, username, role_id FROM users ORDER BY id_user ASC";
-$stmt = $pdo->query($sql);
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
+    <?php
+    $sql = "SELECT id_user, username, role_id FROM users ORDER BY id_user ASC";
+    $stmt = $pdo->query($sql);
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    ?>
 
-<h2>Liste des utilisateurs</h2>
+    <section>
+        <h2>Liste des utilisateurs</h2>
 
-<div class="container">
-
-<?php foreach ($users as $user): ?>
-        <div class="card">
-            <h3>
-                #<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?> -
-                <?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?>
-            </h3>
-            <?php if (($_SESSION['role_id'] ?? 0) == 2): ?>
-                <?php if ($_SESSION['role_id'] == 1){
-                    echo "<p> Role : Admin </p>";
-                } else {
-                    echo "<p> Role : User </p>";
-                    }
-                ?>
-            <?php endif; ?>
-            <p>
-                <a href="view_user.php?id_user=<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?>">Voir le profil</a>
-            </p>
+        <div class="container">
+        <?php foreach ($users as $user): ?>
+                <div class="card">
+                    <h3>
+                        #<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?> -
+                        <?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?>
+                    </h3>
+                    <?php if (($_SESSION['role_id'] ?? 0) == 2): ?>
+                        <?php if ($_SESSION['role_id'] == 1): ?>
+                            <p> Role : Admin </p>
+                        <?php else: ?>
+                            <p> Role : User </p>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <p>
+                        <a href="view_user.php?id_user=<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?>">Voir le profil</a>
+                    </p>
+                </div>
+        <?php endforeach; ?>
         </div>
-<?php endforeach; ?>
-</div>
-
+    </section>
 </main>
 
 <script>

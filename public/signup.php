@@ -89,18 +89,24 @@ include_once SRC . "/views/layouts/header.php";
         <?php endif; ?>
         <?php if (!$succes): ?>
         <form method="POST">
-            <label for="username">username :</label>
-            <input type="text" id="username" name="username" required>
+            <p>
+                <label for="username">username :</label>
+                <input type="text" id="username" name="username" required>
+            </p>
 
-            <label for="email">email :</label>
-            <input type="email" id="email" name="email" required>
+            <p>
+                <label for="email">email :</label>
+                <input type="email" id="email" name="email" required>
+            </p>
 
-            <label for="password">password :</label>
-            <input type="password" id="password" name="password" required>
+            <p>
+                <label for="password">password :</label>
+                <input type="password" id="password" name="password" required>
+            </p>
 
             <div class="captcha-login-block">
-                <p class="section-title">Captcha</p>
-                <p style="margin-bottom:10px;">Rearrange the pieces into the correct order</p>
+                <span class="section-title">Captcha</span>
+                <p>Rearrange the pieces into the correct order</p>
 
                 <div id="game">
                     <div id="parts"></div>
