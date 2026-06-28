@@ -26,7 +26,6 @@ $allResults = ['articles' => [], 'users' => [], 'categories' => []];
 $totalCount = 0;
 
 try {
-    // Recherche articles
     $stmt = $pdo->prepare("
     SELECT a.id_article,
            a.title,
@@ -48,16 +47,15 @@ try {
     ");
     $stmt->execute([':q' => $like]);
     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     foreach ($articles as &$article) {
         $article['excerpt'] = mb_substr(strip_tags($article['content']), 0, 100) . '…';
         unset($article['content']);
     }
-    
+
     $allResults['articles'] = $articles;
     $totalCount += count($articles);
 
-    // Recherche utilisateurs
     $stmt = $pdo->prepare("
         SELECT u.id_user,
                u.username,
@@ -72,11 +70,10 @@ try {
     ");
     $stmt->execute([':q' => $like]);
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     $allResults['users'] = $users;
     $totalCount += count($users);
 
-    // Recherche catégories
     $stmt = $pdo->prepare("
         SELECT c.id_category,
                c.name,
@@ -92,7 +89,7 @@ try {
     ");
     $stmt->execute([':q' => $like]);
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     $allResults['categories'] = $categories;
     $totalCount += count($categories);
 

@@ -139,7 +139,7 @@ include_once SRC . "/views/layouts/header.php";
                             <div class="result-card user-card">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        <a href="user.php?id=<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?>" class="card-link">
+                                        <a href="view_user.php?id_user=<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?>" class="card-link">
                                             <?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?>
                                         </a>
                                     </h3>
@@ -153,7 +153,7 @@ include_once SRC . "/views/layouts/header.php";
                                     </div>
                                 <?php endif; ?>
                                 <div class="card-footer">
-                                    <a href="user.php?id=<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?>" class="btn-read-more">
+                                    <a href="view_user.php?id_user=<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?>" class="btn-read-more">
                                         Voir le profil →
                                     </a>
                                 </div>

@@ -37,7 +37,10 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php foreach ($users as $user): ?>
         <div class="card">
-            <h3>#<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?> - <?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?></h3>
+            <h3>
+                #<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?> -
+                <?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?>
+            </h3>
             <?php if (($_SESSION['role_id'] ?? 0) == 2): ?>
                 <?php if ($_SESSION['role_id'] == 1){
                     echo "<p> Role : Admin </p>";
@@ -46,6 +49,9 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     }
                 ?>
             <?php endif; ?>
+            <p>
+                <a href="view_user.php?id_user=<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?>">Voir le profil</a>
+            </p>
         </div>
 <?php endforeach; ?>
 </div>
@@ -85,7 +91,7 @@ async function performSearch() {
     data.results.forEach(user => {
         html += `
         <li>
-        <a href="/users/${user.id_user}">
+        <a href="view_user.php?id_user=${user.id_user}">
         <strong>${escHtml(user.username)}</strong>
         <span>(${escHtml(user.role)})</span>
         ${user.bio ? `<p>${escHtml(user.bio)}</p>` : ''}

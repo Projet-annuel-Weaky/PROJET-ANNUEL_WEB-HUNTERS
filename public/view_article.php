@@ -57,15 +57,12 @@ include_once SRC . "/views/layouts/header.php";
                             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                         };
 
-                        // clone element to apply PDF-specific styling without altering the page
                         const clone = element.cloneNode(true);
                         clone.style.background = '#fff';
                         clone.style.color = '#000';
 
-                        // remove interactive elements so they are not included in the PDF
                         const actions = clone.querySelector('.article-actions');
                         if (actions) actions.remove();
-                        // extra safety: remove any remaining form or interactive controls
                         clone.querySelectorAll('button, input, textarea, select').forEach(el => el.remove());
 
                         clone.querySelectorAll('a').forEach(a => {
