@@ -107,17 +107,6 @@ include_once SRC . "/views/layouts/header.php";
 </main>
 
 <script>
-document.getElementById('search-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const q = document.getElementById('search-input').value.trim();
-    const zone = document.getElementById('search-results');
-
-    if (q.length < 2) {
-        zone.innerHTML = '<p>Saisissez au moins 2 caractères.</p>';
-        return;
-    }
-
-    zone.innerHTML = '<p>Recherche en cours…</p>';
 let searchTimeout;
 
 async function performSearch() {
@@ -131,37 +120,39 @@ async function performSearch() {
   zone.innerHTML = '<p>Recherche en cours…</p>';
 
     try {
-        const response = await fetch('/search_categorie.php', {
+        const response = await fetch('./search_categorie.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ q })
         });
 
-        if (!response.ok) throw new Error('Erreur serveur : ' + response.status);
         const data = await response.json();
 
-        if (data.count === 0) {
-            zone.innerHTML = `<p>Aucune catégorie trouvée pour "${escHtml(q)}".</p>`;
-            return;
-        }
+        if (!response.ok) throw new Error('Erreur serveur : ' + response.status);
 
-        let html = `<p>${data.count} catégorie(s) trouvée(s) pour "<strong>${escHtml(q)}</strong>"</p><ul>`;
-        data.results.forEach(cat => {
-            html += `
-            <li>
-                <a href="category.php?id_category=${cat.id_category}">
-                    <strong>${escHtml(cat.name)}</strong>
-                    <span>(${cat.nb_articles} article${cat.nb_articles > 1 ? 's' : ''})</span>
-                    ${cat.description ? `<p>${escHtml(cat.description)}</p>` : ''}
-                </a>
-            </li>`;
-        });
-        html += '</ul>';
-        zone.innerHTML = html;
-
-    } catch (err) {
-        zone.innerHTML = `<p style="color:red;">Erreur : ${err.message}</p>`;
+    if (data.count === 0) {
+        zone.innerHTML = `<p>Aucune catégories trouvé pour "${escHtml(q)}".</p>`;
+        return;
     }
+
+    let html = `<p>${data.count} catégorie(s) trouvée(s) pour "<strong>${escHtml(q)}</strong>"</p><ul>`;
+    data.results.forEach(cat => {
+        html += `
+        <li>
+        <a href="./category.php?id_category=${cat.id_category}">
+        <strong>${escHtml(cat.name)}</strong>
+        <span>(${cat.nb_articles} article</span>
+        ${cat.description ? `<p>${escHtml(cat.description)}</p>` : ''}
+        </a>
+        </li>`;
+    });
+    html += '</ul>';
+    zone.innerHTML = html;
+
+  } catch (err) {
+    zone.innerHTML = `<p style="color:red;">Erreur : ${err.message}</p>`;
+  }
+}
 
 document.getElementById('search-input').addEventListener('input', function() {
   clearTimeout(searchTimeout);
