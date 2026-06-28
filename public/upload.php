@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
     if (file_exists($oldPath)) {
         unlink($oldPath);
         }
-    }       
+    }
 
     if (move_uploaded_file($file['tmp_name'], $targetPath)) {
         $stmt = $pdo->prepare("UPDATE users SET avatar = ? WHERE id_user = ?");

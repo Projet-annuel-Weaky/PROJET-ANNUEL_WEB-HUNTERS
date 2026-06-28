@@ -80,7 +80,7 @@ include_once SRC . "/views/layouts/header.php";
     <section>
         <span id="pp">
         <?php $currentPicture = $_SESSION['avatar'] ?? 'DEFAULT_pp.png'; ?>
-        <img src="../assets/pp/<?= htmlspecialchars($currentPicture, ENT_QUOTES, 'UTF-8') ?>"
+        <img src="avatar.php?file=<?= rawurlencode($currentPicture) ?>"
          alt="Profile picture"
          width="150">
         </span>
@@ -139,4 +139,3 @@ include_once SRC . "/views/layouts/header.php";
 <?php
 include_once SRC . '/views/layouts/footer.php';
 ?>
-

@@ -14,7 +14,7 @@ $user = null;
 
 if ($idUser > 0) {
     $stmt = $pdo->prepare("
-        SELECT u.id_user, u.username, u.email, u.bio, u.is_verified, u.created_at, r.name AS role_name
+        SELECT u.id_user, u.username, u.email, u.bio, u.avatar, u.is_verified, u.created_at, r.name AS role_name
         FROM users u
         LEFT JOIN roles r ON r.role_id = u.role_id
         WHERE u.id_user = :id_user
@@ -30,7 +30,11 @@ include_once SRC . "/views/layouts/header.php";
 <main>
     <section>
         <?php if ($user): ?>
+            <?php $avatar = !empty($user["avatar"]) ? $user["avatar"] : "DEFAULT_pp.png"; ?>
             <article class="card">
+                <p>
+                    <img src="avatar.php?file=<?= rawurlencode($avatar) ?>" alt="Photo de profil" width="150">
+                </p>
                 <h1><?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?></h1>
                 <p>Rôle : <?= htmlspecialchars($user['role_name'] ?? 'Utilisateur', ENT_QUOTES, 'UTF-8') ?></p>
 
