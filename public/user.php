@@ -48,21 +48,20 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </main>
 
 <script>
-document.getElementById('search-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
+let searchTimeout;
+
+async function performSearch() {
     const q       = document.getElementById('search-input').value.trim();
     const zone    = document.getElementById('search-results');
 
-    if (q.length < 2) 
-    { 
-        zone.innerHTML = '<p>Saisissez au moins 2 caractères.</p>';
+    if (q.length < 2) {
+        zone.innerHTML = '';
         return;
     }
 
     zone.innerHTML = '<p>Recherche en cours…</p>';
     
-    try
-    {
+    try {
         const response = await fetch('/search_users.php', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -73,8 +72,7 @@ document.getElementById('search-form').addEventListener('submit', async function
 
     const data = await response.json();
 
-    if (data.count === 0) 
-    {
+    if (data.count === 0) {
         zone.innerHTML = `<p>Aucun utilisateur trouvé pour "${escHtml(q)}".</p>`;
         return;
     }
@@ -96,6 +94,17 @@ document.getElementById('search-form').addEventListener('submit', async function
     } catch (err) {
     zone.innerHTML = `<p style="color:red;">Erreur : ${err.message}</p>`;
     }
+}
+
+document.getElementById('search-input').addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(performSearch, 300);
+});
+
+document.getElementById('search-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    clearTimeout(searchTimeout);
+    performSearch();
 });
 
 function escHtml(str) {
