@@ -130,8 +130,6 @@ include_once SRC . "/views/layouts/header.php";
                   placeholder="..."
         ><?= htmlspecialchars($bio, ENT_QUOTES, 'UTF-8') ?></textarea>
 
-        <small id="bio-counter">0 / 255</small>
-
         <button type="submit">Save bio</button>
     </form>
     </div>

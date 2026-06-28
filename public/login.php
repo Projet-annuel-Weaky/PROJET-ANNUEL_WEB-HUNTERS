@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['role_id'] = $user['role_id'] ?? 1;
                 $_SESSION['avatar'] = $user['avatar'];
                 $_SESSION['last_activity'] = time();
+                $_SESSION['bio'] = $user['bio'];
                 session_regenerate_id(true);
 
                 LogService::add('login_success', 'login.php', $user['id_user']);

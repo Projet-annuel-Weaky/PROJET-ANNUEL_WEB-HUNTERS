@@ -6,10 +6,56 @@ define("SRC", ROOT . "/src");
 require_once CONFIG . "/config.php";
 require_once SRC . "/services/LogService.php";
 require_once SRC . "/services/ArticleService.php";
+require_once SRC . "/services/CategoryService.php";
 
 LogService::visit('article.php');
 
-$articles = ArticleService::publicList();
+$erreur = '';
+$succes = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
+    $idArticle = (int)($_POST['id_article'] ?? 0);
+    $idCategory = (int)($_POST['id_category'] ?? 0);
+    $title = trim($_POST['title'] ?? '');
+    $content = trim($_POST['content'] ?? '');
+    $status = $_POST['status'] ?? 'draft';
+    $idCategory = $idCategory > 0 ? $idCategory : null;
+
+    if ($status !== 'published') {
+        $status = 'draft';
+    }
+
+    try {
+        if ($action === 'create') {
+            if ($title === '' || $content === '') {
+                $erreur = 'Veuillez remplir le titre et le contenu.';
+            } else {
+                ArticleService::create($idCategory, $_SESSION['id_user'] ?? null, $title, $content, $status);
+                $succes = 'Article créé.';
+            }
+        }
+
+        if ($action === 'update' && $idArticle > 0) {
+            if ($title === '' || $content === '') {
+                $erreur = 'Veuillez remplir le titre et le contenu.';
+            } else {
+                ArticleService::update($idArticle, $idCategory, $title, $content, $status);
+                $succes = 'Article modifié.';
+            }
+        }
+
+        if ($action === 'delete' && $idArticle > 0) {
+            ArticleService::delete($idArticle);
+            $succes = 'Article supprimé.';
+        }
+    } catch (PDOException $e) {
+        $erreur = 'Action impossible.';
+    }
+}
+
+$categories = CategoryService::all();
+$articles = ArticleService::allForAdmin();
 
 include_once SRC . "/views/layouts/header.php";
 ?>
@@ -19,6 +65,31 @@ include_once SRC . "/views/layouts/header.php";
         <article>
             <h1>ARTICLES</h1>
         </article>
+        <div class="admin-panel">
+                <h2>Créer un article</h2>
+                <?php if ($erreur): ?>
+                    <p class="error"><?= htmlspecialchars($erreur, ENT_QUOTES, 'UTF-8') ?></p>
+                <?php endif; ?>
+                <?php if ($succes): ?>
+                    <p class="success"><?= htmlspecialchars($succes, ENT_QUOTES, 'UTF-8') ?></p>
+                <?php endif; ?>
+                <form method="POST">
+                    <input type="hidden" name="action" value="create">
+                    <input type="text" name="title" placeholder="Titre" required>
+                    <select name="id_category">
+                        <option value="0">Sans catégorie</option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= $category['id_category'] ?>"><?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <select name="status">
+                        <option value="draft">Brouillon</option>
+                        <option value="published">Publié</option>
+                    </select>
+                    <textarea name="content" placeholder="Contenu" required></textarea>
+                    <button type="submit">Créer</button>
+                </form>
+            </div>
         <div class = "searchandresultsContainer">
             <form id="search-form">
                 <input type="text" id="search-input" placeholder="Rechercher un article..." minlength="2" />
@@ -59,7 +130,7 @@ document.getElementById('search-form').addEventListener('submit', async function
     zone.innerHTML = '<p>Recherche en cours…</p>';
 
   try {
-    const response = await fetch('/search_article.php', {
+    const response = await fetch('./search_article.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ q })
@@ -77,7 +148,7 @@ document.getElementById('search-form').addEventListener('submit', async function
     data.results.forEach(article => {
       html += `
         <li>
-          <a href="articles.php?id=${article.id_article}">
+          <a href="view_article.php?id_article=${article.id_article}">
             <strong>${escHtml(article.title)}</strong>
             ${article.categorie ? `<span> — ${escHtml(article.categorie)}</span>` : ''}
             <small>par ${escHtml(article.auteur ?? 'Anonyme')} · ${article.created_at}</small>

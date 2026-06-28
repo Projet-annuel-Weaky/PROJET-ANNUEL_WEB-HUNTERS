@@ -26,7 +26,7 @@ include_once SRC . "/views/layouts/header.php";
     </section>
 
 <?php
-$sql = "SELECT id_user, username, email FROM users ORDER BY id_user ASC";
+$sql = "SELECT id_user, username, role_id FROM users ORDER BY id_user ASC";
 $stmt = $pdo->query($sql);
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -39,7 +39,12 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="card">
             <h3>#<?= htmlspecialchars($user['id_user'], ENT_QUOTES, 'UTF-8') ?> - <?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?></h3>
             <?php if (($_SESSION['role_id'] ?? 0) == 2): ?>
-                <p>Email : <?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8') ?></p>
+                <?php if ($_SESSION['role_id'] == 1){
+                    echo "<p> Role : Admin </p>";
+                } else {
+                    echo "<p> Role : User </p>";
+                    }
+                ?>
             <?php endif; ?>
         </div>
 <?php endforeach; ?>
@@ -63,7 +68,7 @@ document.getElementById('search-form').addEventListener('submit', async function
     
     try
     {
-        const response = await fetch('/search_users.php', {
+        const response = await fetch('./search_users.php', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ q })
