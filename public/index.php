@@ -30,6 +30,9 @@ $home = function() {
                 <div class="card">
                     <a href="category.php">Catégories</a>
                 </div>
+                <div class="card">
+                    <a href="chat.php">Chat</a>
+                </div>
                 <?php if (isset($_SESSION['id_user'])): ?>
                     <div class="card">
                         <a href="profile.php">Profil</a>

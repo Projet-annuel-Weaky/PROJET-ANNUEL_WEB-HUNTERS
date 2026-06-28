@@ -88,5 +88,6 @@ $menuIconSrc =
                         <a href="article.php"><button>NAVIGATION</button></a>
                         <a href="category.php"><button>CATEGORIES</button></a>
                         <a href="user.php"><button>UTILISATEURS</button></a>
+                        <a href="chat.php"><button>CHAT</button></a>
                     </aside>
                 </div>
